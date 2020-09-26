@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\DEVELOPMENT\\OTHER\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj",
+      "projectUniqueName": "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj",
       "projectName": "Puzzlemaker Pro",
-      "projectPath": "C:\\DEVELOPMENT\\OTHER\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj",
+      "projectPath": "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj",
       "packagesPath": "C:\\Users\\spinj\\.nuget\\packages\\",
-      "outputPath": "C:\\DEVELOPMENT\\OTHER\\PUZZLEMAKERPRO\\.mono\\temp\\obj\\",
+      "outputPath": "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\.mono\\temp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
