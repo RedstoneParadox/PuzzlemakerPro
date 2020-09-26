@@ -32,7 +32,5 @@ namespace PuzzlemakerPro.Scripts.Util
         {
             return new Maybe<T>();
         }
-
-        public 
     }
 }
