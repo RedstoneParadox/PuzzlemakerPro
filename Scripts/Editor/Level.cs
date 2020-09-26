@@ -9,7 +9,9 @@ namespace PuzzlemakerPro.Scripts.Editor
 {
     class Level
     {
-        private readonly Dictionary<VoxelPos, Voxel> Voxels;
+        private readonly Dictionary<VoxelPos, Voxel> Voxels = new Dictionary<VoxelPos, Voxel>();
+        private readonly SurfaceTool Builder = new SurfaceTool();
+        private readonly Color White = Color.Color8(255, 255, 255);
 
         public void SetVoxel(VoxelPos pos, Voxel voxel)
         {
@@ -123,6 +125,71 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
 
             return voxel;
+        }
+
+        public void BuildVoxelMesh()
+        {
+            Builder.Begin(Mesh.PrimitiveType.Triangles);
+
+            foreach (VoxelPos pos in Voxels.Keys)
+            {
+                var voxel = GetVoxel(pos, false);
+                for (int i = 0; i < 6; i++)
+                {
+                    switch (i)
+                    {
+                        // Front
+                        case 0:
+                            BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up);
+                            break;
+                        // Back
+                        case 1:
+                            BuildFace(pos.South().ToVector3(), Vector3.Right, Vector3.Up);
+                            break;
+                        // Right
+                        case 2:
+                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Up);
+                            break;
+                        // Left
+                        case 3:
+                            BuildFace(pos.West().ToVector3(), Vector3.Back, Vector3.Up);
+                            break;
+                        // Top
+                        case 4:
+                            BuildFace(pos.Up().ToVector3(), Vector3.Back, Vector3.Right);
+                            break;
+                        // Bottom
+                        case 5:
+                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right);
+                            break;
+                    }
+                }
+
+                var mesh = Builder.Commit();
+                Builder.Clear();
+            }
+        }
+
+        private void BuildFace(Vector3 start, Vector3 dirA, Vector3 dirB)
+        {
+            var first = start;
+            var second = start + dirA;
+            var third = start + dirA + dirB;
+            var fourth = start + dirB;
+
+            AddVertex(first, White);
+            AddVertex(second, White);
+            AddVertex(third, White);
+
+            AddVertex(third, White);
+            AddVertex(fourth, White);
+            AddVertex(first, White);
+        }
+
+        private void AddVertex(Vector3 vertex, Color color)
+        {
+            Builder.AddColor(color);
+            Builder.AddVertex(vertex);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Godot;
 
 namespace PuzzlemakerPro.Scripts.Editor
 {
@@ -70,6 +71,11 @@ namespace PuzzlemakerPro.Scripts.Editor
                 y = this.y - 1,
                 z = this.z,
             };
+        }
+
+        public Vector3 ToVector3()
+        {
+            return new Vector3(x, y, z);
         }
     }
 }
