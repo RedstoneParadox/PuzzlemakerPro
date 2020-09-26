@@ -105,11 +105,6 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                     }
                 }
-
-                if (neighbor.IsEmpty())
-                {
-                    Voxels.Remove(neighborPos);
-                }
             }
         }
 
