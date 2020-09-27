@@ -10,13 +10,19 @@ namespace PuzzlemakerPro.Scripts.Editor
     class Level: Spatial
     {
         private readonly Dictionary<VoxelPos, Voxel> Voxels = new Dictionary<VoxelPos, Voxel>();
-        private readonly SurfaceTool Builder = new SurfaceTool();
+        private SurfaceTool Builder = new SurfaceTool();
         private readonly Color White = Color.Color8(255, 255, 255);
-        private readonly Color Black = Color.Color8(255, 255, 255);
+        private readonly Color Black = Color.Color8(0, 0, 0);
         private readonly Color Red = Color.Color8(255, 0, 0);
         private readonly Color Blue = Color.Color8(0, 255, 0);
         private readonly Color Green = Color.Color8(0, 0, 255);
         private readonly Color Purple = Color.Color8(255, 0, 255);
+
+        public override void _Ready()
+        {
+            base._Ready();
+            Builder.Begin(Mesh.PrimitiveType.Triangles);
+        }
 
         public override void _Process(float delta)
         {
@@ -161,8 +167,6 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public void BuildVoxelMesh()
         {
-            Builder.Begin(Mesh.PrimitiveType.Triangles);
-
             foreach (VoxelPos pos in Voxels.Keys)
             {
                 var voxel = GetVoxel(pos, false);
