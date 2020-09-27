@@ -176,11 +176,11 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                         // Back
                         case 1:
-                            BuildFace(pos.South().ToVector3(), Vector3.Right, Vector3.Up, Black, Vector3.Back);
+                            BuildFace(pos.South().ToVector3(), Vector3.Up, Vector3.Right, Black, Vector3.Back);
                             break;
                         // Right
                         case 2:
-                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Up, Red, Vector3.Right);
+                            BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, Red, Vector3.Right);
                             break;
                         // Left
                         case 3:
@@ -188,7 +188,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                         // Top
                         case 4:
-                            BuildFace(pos.Up().ToVector3(), Vector3.Back, Vector3.Right, Green, Vector3.Up);
+                            BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, Green, Vector3.Up);
                             break;
                         // Bottom
                         case 5:
@@ -197,9 +197,8 @@ namespace PuzzlemakerPro.Scripts.Editor
                     }
                 }
 
-                var mesh = Builder.Commit();
                 var meshInstance = GetNode<MeshInstance>("VoxelMesh");
-                meshInstance.Mesh = mesh;
+                meshInstance.Mesh = Builder.Commit();
 
                 Builder.Clear();
             }
@@ -223,8 +222,8 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         private void AddVertex(Vector3 vertex, Color color, Vector3 normal)
         {
-            Builder.AddColor(color);
             Builder.AddNormal(normal);
+            Builder.AddColor(color);
             Builder.AddVertex(vertex);
         }
     }
