@@ -7,11 +7,40 @@ using Godot;
 
 namespace PuzzlemakerPro.Scripts.Editor
 {
-    class Level
+    class Level: Spatial
     {
         private readonly Dictionary<VoxelPos, Voxel> Voxels = new Dictionary<VoxelPos, Voxel>();
         private readonly SurfaceTool Builder = new SurfaceTool();
         private readonly Color White = Color.Color8(255, 255, 255);
+        private readonly Color Black = Color.Color8(255, 255, 255);
+        private readonly Color Red = Color.Color8(255, 0, 0);
+        private readonly Color Blue = Color.Color8(0, 255, 0);
+        private readonly Color Green = Color.Color8(0, 0, 255);
+        private readonly Color Purple = Color.Color8(255, 0, 255);
+
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+
+            if (Input.IsActionJustPressed("ui_accept"))
+            {
+                GenerateDefaultChamber();
+            }
+        }
+
+        public void GenerateDefaultChamber()
+        {
+            var voxel = new Voxel();
+
+            voxel.northTexture = "w";
+            voxel.southTexture = "w";
+            voxel.eastTexture = "w";
+            voxel.westTexture = "w";
+            voxel.topTexture = "w";
+            voxel.bottomTexture = "w";
+
+            SetVoxel(new VoxelPos(0, 0, 0), voxel);
+        }
 
         public void SetVoxel(VoxelPos pos, Voxel voxel)
         {
@@ -66,6 +95,7 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
 
             Voxels[pos] = voxel;
+            BuildVoxelMesh();
         }
 
         public void RemoveVoxel(VoxelPos pos, string texture)
@@ -108,6 +138,8 @@ namespace PuzzlemakerPro.Scripts.Editor
                     }
                 }
             }
+
+            BuildVoxelMesh();
         }
 
         public Voxel GetVoxel(VoxelPos pos, bool addToLevel)
@@ -140,55 +172,59 @@ namespace PuzzlemakerPro.Scripts.Editor
                     {
                         // Front
                         case 0:
-                            BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up);
+                            BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up, White, Vector3.Forward);
                             break;
                         // Back
                         case 1:
-                            BuildFace(pos.South().ToVector3(), Vector3.Right, Vector3.Up);
+                            BuildFace(pos.South().ToVector3(), Vector3.Right, Vector3.Up, Black, Vector3.Back);
                             break;
                         // Right
                         case 2:
-                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Up);
+                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Up, Red, Vector3.Right);
                             break;
                         // Left
                         case 3:
-                            BuildFace(pos.West().ToVector3(), Vector3.Back, Vector3.Up);
+                            BuildFace(pos.East().ToVector3(), Vector3.Back, Vector3.Up, Blue, Vector3.Left);
                             break;
                         // Top
                         case 4:
-                            BuildFace(pos.Up().ToVector3(), Vector3.Back, Vector3.Right);
+                            BuildFace(pos.Up().ToVector3(), Vector3.Back, Vector3.Right, Green, Vector3.Up);
                             break;
                         // Bottom
                         case 5:
-                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right);
+                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, Purple, Vector3.Down);
                             break;
                     }
                 }
 
                 var mesh = Builder.Commit();
+                var meshInstance = GetNode<MeshInstance>("VoxelMesh");
+                meshInstance.Mesh = mesh;
+
                 Builder.Clear();
             }
         }
 
-        private void BuildFace(Vector3 start, Vector3 dirA, Vector3 dirB)
+        private void BuildFace(Vector3 start, Vector3 dirA, Vector3 dirB, Color color, Vector3 normal)
         {
             var first = start;
             var second = start + dirA;
             var third = start + dirA + dirB;
             var fourth = start + dirB;
 
-            AddVertex(first, White);
-            AddVertex(second, White);
-            AddVertex(third, White);
+            AddVertex(first, color, normal);
+            AddVertex(second, color, normal);
+            AddVertex(third, color, normal);
 
-            AddVertex(third, White);
-            AddVertex(fourth, White);
-            AddVertex(first, White);
+            AddVertex(third, color, normal);
+            AddVertex(fourth, color, normal);
+            AddVertex(first, color, normal);
         }
 
-        private void AddVertex(Vector3 vertex, Color color)
+        private void AddVertex(Vector3 vertex, Color color, Vector3 normal)
         {
             Builder.AddColor(color);
+            Builder.AddNormal(normal);
             Builder.AddVertex(vertex);
         }
     }
