@@ -11,12 +11,8 @@ namespace PuzzlemakerPro.Scripts.Editor
     {
         private readonly Dictionary<VoxelPos, Voxel> Voxels = new Dictionary<VoxelPos, Voxel>();
         private SurfaceTool Builder = new SurfaceTool();
-        private readonly Color White = Color.Color8(255, 255, 255);
-        private readonly Color Black = Color.Color8(0, 0, 0);
-        private readonly Color Red = Color.Color8(255, 0, 0);
-        private readonly Color Blue = Color.Color8(0, 255, 0);
-        private readonly Color Green = Color.Color8(0, 0, 255);
-        private readonly Color Purple = Color.Color8(255, 0, 255);
+        private readonly Vector2 White = new Vector2(0, 0);
+        private readonly Vector2 Black = new Vector2(1, 0);
 
         public override void _Ready()
         {
@@ -170,6 +166,7 @@ namespace PuzzlemakerPro.Scripts.Editor
             foreach (VoxelPos pos in Voxels.Keys)
             {
                 var voxel = GetVoxel(pos, false);
+
                 for (int i = 0; i < 6; i++)
                 {
                     switch (i)
@@ -180,23 +177,23 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                         // Back
                         case 1:
-                            BuildFace(pos.South().ToVector3(), Vector3.Up, Vector3.Right, Black, Vector3.Back);
+                            BuildFace(pos.South().ToVector3(), Vector3.Up, Vector3.Right, White, Vector3.Back);
                             break;
                         // Right
                         case 2:
-                            BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, Red, Vector3.Right);
+                            BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, Black, Vector3.Right);
                             break;
                         // Left
                         case 3:
-                            BuildFace(pos.East().ToVector3(), Vector3.Back, Vector3.Up, Blue, Vector3.Left);
+                            BuildFace(pos.East().ToVector3(), Vector3.Back, Vector3.Up, Black, Vector3.Left);
                             break;
                         // Top
                         case 4:
-                            BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, Green, Vector3.Up);
+                            BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, Black, Vector3.Up);
                             break;
                         // Bottom
                         case 5:
-                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, Purple, Vector3.Down);
+                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, Black, Vector3.Down);
                             break;
                     }
                 }
@@ -208,26 +205,25 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
         }
 
-        private void BuildFace(Vector3 start, Vector3 dirA, Vector3 dirB, Color color, Vector3 normal)
+        private void BuildFace(Vector3 start, Vector3 dirA, Vector3 dirB, Vector2 uv, Vector3 normal)
         {
             var first = start;
             var second = start + dirA;
             var third = start + dirA + dirB;
             var fourth = start + dirB;
 
-            AddVertex(first, color, normal);
-            AddVertex(second, color, normal);
-            AddVertex(third, color, normal);
+            AddVertex(first, uv, normal);
+            AddVertex(second, uv, normal);
+            AddVertex(third, uv, normal);
 
-            AddVertex(third, color, normal);
-            AddVertex(fourth, color, normal);
-            AddVertex(first, color, normal);
+            AddVertex(third, uv, normal);
+            AddVertex(fourth, uv, normal);
+            AddVertex(first, uv, normal);
         }
 
-        private void AddVertex(Vector3 vertex, Color color, Vector3 normal)
+        private void AddVertex(Vector3 vertex, Vector2 uv, Vector3 normal)
         {
-            Builder.AddNormal(normal);
-            Builder.AddColor(color);
+            Builder.AddUv(uv);
             Builder.AddVertex(vertex);
         }
     }
