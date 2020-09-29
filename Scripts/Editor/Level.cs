@@ -11,6 +11,7 @@ namespace PuzzlemakerPro.Scripts.Editor
     {
         private readonly Dictionary<VoxelPos, Voxel> Voxels = new Dictionary<VoxelPos, Voxel>();
         private SurfaceTool Builder = new SurfaceTool();
+        private readonly List<Vector3> collisionShapeFaces = new List<Vector3>();
         private readonly Vector2 White = new Vector2(0, 0f);
         private readonly Vector2 Black = new Vector2(0.5f, 0f);
         private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
@@ -247,6 +248,13 @@ namespace PuzzlemakerPro.Scripts.Editor
             var voxelMesh = GetNode<MeshInstance>("VoxelMesh");
             voxelMesh.Mesh = Builder.Commit();
             Builder.Clear();
+
+            var collisionShape = GetNode<CollisionShape>("VoxelBody/VoxelCollision");
+            var shape = new ConcavePolygonShape();
+            shape.Data = collisionShapeFaces.ToArray();
+
+            collisionShape.Shape = shape;
+            collisionShapeFaces.Clear();
         }
 
         public Vector2 UVFromName(string name)
@@ -283,6 +291,7 @@ namespace PuzzlemakerPro.Scripts.Editor
             Builder.AddUv(uv);
             Builder.AddNormal(normal);
             Builder.AddVertex(vertex);
+            collisionShapeFaces.Add(vertex);
         }
     }
 }
