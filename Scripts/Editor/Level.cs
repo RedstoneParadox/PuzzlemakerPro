@@ -12,7 +12,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Dictionary<VoxelPos, Voxel> Voxels = new Dictionary<VoxelPos, Voxel>();
         private SurfaceTool Builder = new SurfaceTool();
         private readonly Vector2 White = new Vector2(0, 0f);
-        private readonly Vector2 Black = new Vector2(1f, 0f);
+        private readonly Vector2 Black = new Vector2(0.5f, 0f);
         private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
         private bool updateMesh = false;
 
@@ -270,11 +270,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             var fourth = start + dirB;
 
             AddVertex(first, uv, normal);
-            AddVertex(second, uv, normal);
-            AddVertex(third, uv, normal);
+            AddVertex(second, uv + new Vector2(0, 0.5f), normal);
+            AddVertex(third, uv + new Vector2(0.5f, 0.5f), normal);
 
-            AddVertex(third, uv, normal);
-            AddVertex(fourth, uv, normal);
+            AddVertex(third, uv + new Vector2(0.5f, 0.5f), normal);
+            AddVertex(fourth, uv + new Vector2(0.5f, 0), normal);
             AddVertex(first, uv, normal);
         }
 
