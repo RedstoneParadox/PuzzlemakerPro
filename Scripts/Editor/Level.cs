@@ -14,6 +14,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Vector2 White = new Vector2(0, 0f);
         private readonly Vector2 Black = new Vector2(1f, 0f);
         private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
+        private bool updateMesh = false;
 
         public override void _Ready()
         {
@@ -27,6 +28,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             if (Input.IsActionJustPressed("ui_accept"))
             {
                 GenerateDefaultChamber();
+            }
+            if (updateMesh)
+            {
+                updateMesh = false;
+                BuildVoxelMesh();
             }
         }
 
@@ -97,7 +103,7 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
 
             Voxels[pos] = voxel;
-            BuildVoxelMesh();
+            updateMesh = true;
         }
 
         public void RemoveVoxel(VoxelPos pos, string texture)
@@ -141,7 +147,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                 }
             }
 
-            BuildVoxelMesh();
+            updateMesh = true;
         }
 
         public Voxel GetVoxel(VoxelPos pos, bool addToLevel)
