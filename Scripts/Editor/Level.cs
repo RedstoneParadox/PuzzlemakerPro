@@ -38,16 +38,24 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public void GenerateDefaultChamber()
         {
-            var voxel = new Voxel();
+            var floor = new Voxel();
+            floor.topTexture = "white";
+            CreateVoxelShape(new VoxelPos(-4, -1, -4), new VoxelPos(8, -1, 8), floor);
+        }
 
-            voxel.northTexture = "w";
-            voxel.southTexture = "w";
-            voxel.eastTexture = "w";
-            voxel.westTexture = "w";
-            voxel.topTexture = "w";
-            voxel.bottomTexture = "w";
-
-            SetVoxel(new VoxelPos(0, 0, 0), voxel);
+        private void CreateVoxelShape(VoxelPos from, VoxelPos to, Voxel voxel)
+        {
+            for (int x = from.x; x <= to.x; x++)
+            {
+                for (int y = from.y; y <= to.y; y++)
+                {
+                    for (int z = from.z; z <= to.z; z++)
+                    {
+                        var pos = new VoxelPos(x, y, z);
+                        SetVoxel(pos, voxel.Copy());
+                    }
+                }
+            }
         }
 
         public void SetVoxel(VoxelPos pos, Voxel voxel)
@@ -65,23 +73,23 @@ namespace PuzzlemakerPro.Scripts.Editor
                     {
                         // North Neighbor
                         case 0:
-                            neighbor.southTexture = "";
-                            voxel.northTexture = "";
+                            neighbor.backTexture = "";
+                            voxel.frontTexture = "";
                             break;
                         // South Neighbor
                         case 1:
-                            neighbor.northTexture = "";
-                            voxel.southTexture = "";
+                            neighbor.frontTexture = "";
+                            voxel.backTexture = "";
                             break;
                         // East Neighbor
                         case 2:
-                            neighbor.westTexture = "";
-                            voxel.eastTexture = "";
+                            neighbor.leftTexture = "";
+                            voxel.rightTexture = "";
                             break;
                         // West Neighbor
                         case 3:
-                            neighbor.eastTexture = "";
-                            voxel.westTexture = "";
+                            neighbor.rightTexture = "";
+                            voxel.leftTexture = "";
                             break;
                         // Up Neighbor
                         case 4:
@@ -121,19 +129,19 @@ namespace PuzzlemakerPro.Scripts.Editor
                     {
                         // North Neighbor
                         case 0:
-                            neighbor.southTexture = texture;
+                            neighbor.backTexture = texture;
                             break;
                         // South Neighbor
                         case 1:
-                            neighbor.northTexture = texture;
+                            neighbor.frontTexture = texture;
                             break;
                         // East Neighbor
                         case 2:
-                            neighbor.westTexture = texture;
+                            neighbor.leftTexture = texture;
                             break;
                         // West Neighbor
                         case 3:
-                            neighbor.eastTexture = texture;
+                            neighbor.rightTexture = texture;
                             break;
                         // Up Neighbor
                         case 4:
@@ -170,6 +178,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         public void BuildVoxelMesh()
         {
             Builder.Begin(Mesh.PrimitiveType.Triangles);
+            GD.Print("Builder has begun!");
             Builder.SetMaterial(voxelMaterial);
 
             foreach (VoxelPos pos in Voxels.Keys)
@@ -182,36 +191,54 @@ namespace PuzzlemakerPro.Scripts.Editor
                     {
                         // Front
                         case 0:
-                            BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up, White, Vector3.Forward);
+                            if (!voxel.Front()) break;
+                            BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up, UVFromName(voxel.frontTexture), Vector3.Forward);
                             break;
                         // Back
                         case 1:
-                            BuildFace(pos.South().ToVector3(), Vector3.Up, Vector3.Right, White, Vector3.Back);
+                            if (!voxel.Back()) break;
+                            BuildFace(pos.South().ToVector3(), Vector3.Up, Vector3.Right, UVFromName(voxel.backTexture), Vector3.Back);
                             break;
                         // Right
                         case 2:
-                            BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, Black, Vector3.Right);
+                            if (!voxel.Right()) break;
+                            BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, UVFromName(voxel.rightTexture), Vector3.Right);
                             break;
                         // Left
                         case 3:
-                            BuildFace(pos.East().ToVector3(), Vector3.Back, Vector3.Up, Black, Vector3.Left);
+                            if (!voxel.Left()) break;
+                            BuildFace(pos.East().ToVector3(), Vector3.Back, Vector3.Up, UVFromName(voxel.leftTexture), Vector3.Left);
                             break;
                         // Top
                         case 4:
-                            BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, Black, Vector3.Up);
+                            if (!voxel.Top()) break;
+                            BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, UVFromName(voxel.topTexture), Vector3.Up);
                             break;
                         // Bottom
                         case 5:
-                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, Black, Vector3.Down);
+                            if (!voxel.Bottom()) break;
+                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, UVFromName(voxel.bottomTexture), Vector3.Down);
                             break;
                     }
                 }
+            }
 
-                Builder.Index();
-                Builder.GenerateNormals();
-                var voxelMesh = GetNode<MeshInstance>("VoxelMesh");
-                voxelMesh.Mesh = Builder.Commit();
-                Builder.Clear();
+            Builder.Index();
+            var voxelMesh = GetNode<MeshInstance>("VoxelMesh");
+            voxelMesh.Mesh = Builder.Commit();
+            Builder.Clear();
+        }
+
+        public Vector2 UVFromName(string name)
+        {
+            switch (name)
+            {
+                case "white":
+                    return White;
+                case "black":
+                    return Black;
+                default:
+                    return Black;
             }
         }
 
