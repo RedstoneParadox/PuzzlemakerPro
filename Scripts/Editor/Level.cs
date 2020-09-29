@@ -39,8 +39,28 @@ namespace PuzzlemakerPro.Scripts.Editor
         public void GenerateDefaultChamber()
         {
             var floor = new Voxel();
-            floor.topTexture = "white";
+            floor.topTexture = "black";
             CreateVoxelShape(new VoxelPos(-4, -1, -4), new VoxelPos(8, -1, 8), floor);
+
+            var ceiling = new Voxel();
+            ceiling.bottomTexture = "black";
+            CreateVoxelShape(new VoxelPos(-4, 11, -4), new VoxelPos(8, 11, 8), ceiling);
+
+            var leftWall = new Voxel();
+            leftWall.rightTexture = "white";
+            CreateVoxelShape(new VoxelPos(-4, 0, -4), new VoxelPos(-4, 11, 8), leftWall);
+
+            var rightWall = new Voxel();
+            rightWall.leftTexture = "white";
+            CreateVoxelShape(new VoxelPos(8, 0, -4), new VoxelPos(8, 11, 8), rightWall);
+
+            var frontWall = new Voxel();
+            frontWall.backTexture = "white";
+            CreateVoxelShape(new VoxelPos(-4, 0, -4), new VoxelPos(8, 11, -4), frontWall);
+
+            var backWall = new Voxel();
+            backWall.frontTexture = "white";
+            CreateVoxelShape(new VoxelPos(-4, 11, 8), new VoxelPos(8, 1, 8), backWall);
         }
 
         private void CreateVoxelShape(VoxelPos from, VoxelPos to, Voxel voxel)
@@ -261,6 +281,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         private void AddVertex(Vector3 vertex, Vector2 uv, Vector3 normal)
         {
             Builder.AddUv(uv);
+            Builder.AddNormal(normal);
             Builder.AddVertex(vertex);
         }
     }
