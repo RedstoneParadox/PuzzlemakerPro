@@ -44,23 +44,23 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             var ceiling = new Voxel();
             ceiling.bottomTexture = "black";
-            CreateVoxelShape(new VoxelPos(-4, 11, -4), new VoxelPos(8, 11, 8), ceiling);
+            CreateVoxelShape(new VoxelPos(-4, 12, -4), new VoxelPos(8, 12, 8), ceiling);
 
             var leftWall = new Voxel();
             leftWall.rightTexture = "white";
-            CreateVoxelShape(new VoxelPos(-4, 0, -4), new VoxelPos(-4, 11, 8), leftWall);
+            CreateVoxelShape(new VoxelPos(9, 0, -4), new VoxelPos(9, 11, 8), leftWall);
 
             var rightWall = new Voxel();
             rightWall.leftTexture = "white";
-            CreateVoxelShape(new VoxelPos(8, 0, -4), new VoxelPos(8, 11, 8), rightWall);
+            CreateVoxelShape(new VoxelPos(-5, 0, -4), new VoxelPos(-5, 11, 8), rightWall);
 
             var frontWall = new Voxel();
             frontWall.backTexture = "white";
-            CreateVoxelShape(new VoxelPos(-4, 0, -4), new VoxelPos(8, 11, -4), frontWall);
+            CreateVoxelShape(new VoxelPos(-4, 0, -5), new VoxelPos(8, 11, -5), frontWall);
 
             var backWall = new Voxel();
             backWall.frontTexture = "white";
-            CreateVoxelShape(new VoxelPos(-4, 11, 8), new VoxelPos(8, 1, 8), backWall);
+            CreateVoxelShape(new VoxelPos(-4, 0, 9), new VoxelPos(8, 11, 9), backWall);
         }
 
         private void CreateVoxelShape(VoxelPos from, VoxelPos to, Voxel voxel)

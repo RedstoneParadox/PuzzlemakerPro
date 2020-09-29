@@ -8,7 +8,7 @@ public class Camera : Godot.Camera
 
     private float pitch = 0.0f;
     private float yaw = 0.0f;
-    private float length = 2.0f;
+    private float length = 20.0f;
 
     public override void _Ready()
     {
