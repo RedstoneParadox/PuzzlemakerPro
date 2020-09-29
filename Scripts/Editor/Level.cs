@@ -12,12 +12,12 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Dictionary<VoxelPos, Voxel> Voxels = new Dictionary<VoxelPos, Voxel>();
         private SurfaceTool Builder = new SurfaceTool();
         private readonly Vector2 White = new Vector2(0, 0);
-        private readonly Vector2 Black = new Vector2(1, 0);
+        private readonly Vector2 Black = new Vector2(0.5f, 0);
+        private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
 
         public override void _Ready()
         {
             base._Ready();
-            Builder.Begin(Mesh.PrimitiveType.Triangles);
         }
 
         public override void _Process(float delta)
@@ -163,6 +163,9 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public void BuildVoxelMesh()
         {
+            Builder.Begin(Mesh.PrimitiveType.Triangles);
+            Builder.SetMaterial(voxelMaterial);
+
             foreach (VoxelPos pos in Voxels.Keys)
             {
                 var voxel = GetVoxel(pos, false);
@@ -198,9 +201,10 @@ namespace PuzzlemakerPro.Scripts.Editor
                     }
                 }
 
+                Builder.Index();
+                Builder.GenerateNormals();
                 var meshInstance = GetNode<MeshInstance>("VoxelMesh");
                 meshInstance.Mesh = Builder.Commit();
-
                 Builder.Clear();
             }
         }
