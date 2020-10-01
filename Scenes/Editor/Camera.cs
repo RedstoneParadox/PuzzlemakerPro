@@ -5,9 +5,9 @@ public class Camera : Godot.Camera
 {
     private Vector3 pitchAxis = Vector3.Right;
     private Vector3 yawAxis = Vector3.Up;
+    private PackedScene debug = GD.Load<PackedScene>("res://Scenes/Editor/DEBUG.tscn");
 
     private float pitch = 0.0f;
-    private float yaw = 0.0f;
     private float length = 20.0f;
 
     public override void _Ready()
@@ -18,9 +18,6 @@ public class Camera : Godot.Camera
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
-        if (Input.IsActionPressed("ui_left")) yaw -= Mathf.Pi / 90;
-        if (Input.IsActionPressed("ui_right")) yaw += Mathf.Pi / 90;
-
         if (Input.IsActionPressed("ui_up")) pitch -= Mathf.Pi / 90;
         if (Input.IsActionPressed("ui_down")) pitch += Mathf.Pi / 90;
 
@@ -28,12 +25,24 @@ public class Camera : Godot.Camera
 
         if (length < 0.01f) length = 0.01f;
 
-        var translation = new Vector3(0, 0, length).Rotated(Vector3.Up, yaw);
-        var pitchAxis = new Vector3(1, 0, 0).Rotated(Vector3.Up, yaw);
-        translation = translation.Rotated(pitchAxis, pitch);
+        var translation = new Vector3(0, 0, length);
+        translation = translation.Rotated(new Vector3(1, 0, 0), pitch);
 
-        this.Translation = translation;
+        Translation = translation;
         LookAt(Vector3.Zero, Vector3.Up);
+
+        if (Input.IsActionJustPressed("debug_place"))
+        {
+            var spaceState = GetWorld().Space;
+            var pos = GetViewport().GetMousePosition();
+
+            Vector3 target = ProjectRayOrigin(pos);
+
+            var instance = debug.Instance() as MeshInstance;
+            instance.Translation = target;
+
+            GetParent().AddChild(debug.Instance());
+        }
     }
 
     public override void _UnhandledInput(InputEvent @event)
