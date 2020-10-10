@@ -50,6 +50,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             return new VoxelPos(x, y - 1, z);
         }
 
+        public VoxelPos Translate(Vector3 offset)
+        {
+            return new VoxelPos(x + Mathf.FloorToInt(offset.x), y + Mathf.FloorToInt(offset.y), z + Mathf.FloorToInt(offset.z));
+        }
+
         public static VoxelPos FromVector3(Vector3 vector)
         {
             return new VoxelPos(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y), Mathf.FloorToInt(vector.z));
