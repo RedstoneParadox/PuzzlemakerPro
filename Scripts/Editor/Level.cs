@@ -24,7 +24,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Plane FrontPlane = new Plane(0, 0, -1, 0);
         private readonly Plane BackPlane = new Plane(0, 0, 1, 1);
         private readonly Plane RightPlane = new Plane(1, 0, 0, 0);
-        private readonly Plane LeftPlane = new Plane(1, 0, 0, -1);
+        private readonly Plane LeftPlane = new Plane(-1, 0, 0, -1);
 
         public override void _Ready()
         {
@@ -46,7 +46,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                 Spatial camBase = camera.GetParent<Spatial>();
 
                 Vector3 start = camera.ProjectPosition(mousePos, 0.75f);
-                Vector3 direction = camera.ProjectLocalRayNormal(mousePos);
+                Vector3 direction = camera.Translation.DirectionTo(camBase.Translation);
 
                 UpdateSelection(start, direction);
             }
@@ -75,35 +75,45 @@ namespace PuzzlemakerPro.Scripts.Editor
                 var next = current + direction;
                 var pos = VoxelPos.FromVector3(next);
 
-                if (GetVoxel(pos, false).IsEmpty())
-                {
-                    continue;
-                }
 
                 // Move head and tail of segment to origin.
                 var offset = pos.ToVector3();
                 var head = next - offset;
                 var tail = current - offset;
 
-                foreach (Plane face in new Plane[] { TopPlane, BottomPlane, FrontPlane, BackPlane, LeftPlane, RightPlane })
+                var voxel = GetVoxel(pos, false);
+                List<Plane> faces = new List<Plane>();
+
+                if (voxel.HasTop()) faces.Add(TopPlane);
+                if (voxel.HasBottom()) faces.Add(BottomPlane);
+                if (voxel.HasLeft()) faces.Add(LeftPlane);
+                if (voxel.HasRight()) faces.Add(RightPlane);
+                if (voxel.HasFront()) faces.Add(FrontPlane);
+                if (voxel.HasBack()) faces.Add(BackPlane);
+
+
+                if (faces.Count > 0)
                 {
-                    Vector3? intersection = face.IntersectSegment(tail, head);
-
-                    // Note: Both the head and the tail are allowed to end up inside the voxel; because I can't be bothered to properly account for that edge case,
-                    // This null check is necessary.
-                    if (intersection != null)
+                    foreach (Plane face in faces)
                     {
-                        Vector3 point = (Vector3)intersection;
-                        var normal = face.Normal;
+                        Vector3? intersection = face.IntersectSegment(tail, head);
 
-                        // Continue to the next face if the intersection is not within bounds.
-                        if (normal.x == 0 && (point.x < 0 || point.x > 1)) continue;
-                        if (normal.y == 0 && (point.y < 0 || point.y > 1)) continue;
-                        if (normal.z == 0 && (point.z < 0 || point.z > 1)) continue;
+                        // Note: Both the head and the tail are allowed to end up inside the voxel; because I can't be bothered to properly account for that edge case,
+                        // This null check is necessary.
+                        if (intersection != null)
+                        {
+                            Vector3 point = (Vector3)intersection;
+                            var normal = face.Normal;
 
-                        // Update the selection and exit the search.
-                        selection = (pos, normal);
-                        return;
+                            // Continue to the next face if the intersection is not within bounds.
+                            if (normal.x == 0 && (point.x < 0 || point.x > 1)) continue;
+                            if (normal.y == 0 && (point.y < 0 || point.y > 1)) continue;
+                            if (normal.z == 0 && (point.z < 0 || point.z > 1)) continue;
+
+                            // Update the selection and exit the search.
+                            selection = (pos, normal);
+                            return;
+                        }
                     }
                 }
 
