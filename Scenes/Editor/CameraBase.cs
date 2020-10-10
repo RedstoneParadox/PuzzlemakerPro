@@ -9,7 +9,7 @@ public class CameraBase : Spatial
 
     public override void _Ready()
     {
-        
+        RuntimeRoot.CurrentCamera = GetNode<Camera>("Camera");
     }
 
     public override void _Process(float delta)
