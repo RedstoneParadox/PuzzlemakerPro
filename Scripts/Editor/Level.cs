@@ -46,7 +46,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                 Spatial camBase = camera.GetParent<Spatial>();
 
                 Vector3 start = camera.ProjectPosition(mousePos, 0.75f);
-                Vector3 direction = camera.Translation.DirectionTo(camBase.Translation);
+                Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                 UpdateSelection(start, direction);
             }
@@ -76,7 +76,7 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 var next = current + direction;
                 var pos = VoxelPos.FromVector3(next);
-
+                //GD.Print(pos);
 
                 // Move head and tail of segment to origin.
                 var offset = pos.ToVector3();
@@ -84,6 +84,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                 var tail = current - offset;
 
                 var voxel = GetVoxel(pos, false);
+                //GD.Print(voxel);
                 List<Plane> faces = new List<Plane>();
 
                 if (voxel.HasTop()) faces.Add(TopPlane);
@@ -93,11 +94,11 @@ namespace PuzzlemakerPro.Scripts.Editor
                 if (voxel.HasFront()) faces.Add(FrontPlane);
                 if (voxel.HasBack()) faces.Add(BackPlane);
 
-
                 if (faces.Count > 0)
                 {
                     foreach (Plane face in faces)
                     {
+                        //GD.Print("here!");
                         Vector3? intersection = face.IntersectSegment(tail, head);
 
                         // Note: Both the head and the tail are allowed to end up inside the voxel; because I can't be bothered to properly account for that edge case,
@@ -285,6 +286,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                 }
             }
 
+            Voxels.Remove(pos);
             updateMesh = true;
         }
 
@@ -308,7 +310,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         public void BuildVoxelMesh()
         {
             Builder.Begin(Mesh.PrimitiveType.Triangles);
-            GD.Print("Builder has begun!");
+            // GD.Print("Builder has begun!");
             Builder.SetMaterial(voxelMaterial);
 
             foreach (VoxelPos pos in Voxels.Keys)
@@ -357,6 +359,13 @@ namespace PuzzlemakerPro.Scripts.Editor
             var voxelMesh = GetNode<MeshInstance>("VoxelMesh");
             voxelMesh.Mesh = Builder.Commit();
             Builder.Clear();
+
+            /*
+            foreach (KeyValuePair<VoxelPos, Voxel> pair in Voxels)
+            {
+                GD.Print($"{pair.Key}: {pair.Value}");
+            }
+            */
         }
 
         public Vector2 UVFromName(string name)

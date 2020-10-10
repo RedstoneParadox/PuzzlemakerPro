@@ -69,5 +69,27 @@ namespace PuzzlemakerPro.Scripts.Editor
         {
             return $"VoxelPos({x}, {y}, {z})";
         }
+
+        public override bool Equals(object obj)
+        {
+
+
+            if (obj is VoxelPos)
+            {
+                VoxelPos other = (VoxelPos)obj;
+
+                if (x == other.x && y == other.y && z == other.z)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ToVector3().GetHashCode();
+        }
     }
 }

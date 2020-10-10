@@ -83,5 +83,10 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             return voxel;
         }
+
+        public override string ToString()
+        {
+            return $"Voxel(top: {topTexture}, bottom: {bottomTexture}, left: {leftTexture}, right: {rightTexture}, front: {frontTexture}, back: {backTexture})";
+        }
     }
 }
