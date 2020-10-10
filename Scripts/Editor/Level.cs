@@ -248,13 +248,6 @@ namespace PuzzlemakerPro.Scripts.Editor
             var voxelMesh = GetNode<MeshInstance>("VoxelMesh");
             voxelMesh.Mesh = Builder.Commit();
             Builder.Clear();
-
-            var collisionShape = GetNode<CollisionShape>("VoxelBody/VoxelCollision");
-            var shape = new ConcavePolygonShape();
-            shape.Data = collisionShapeFaces.ToArray();
-
-            collisionShape.Shape = shape;
-            collisionShapeFaces.Clear();
         }
 
         public Vector2 UVFromName(string name)
