@@ -17,6 +17,8 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
         private bool updateMesh = false;
 
+        private (VoxelPos, Vector3) selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
+
         public override void _Ready()
         {
             base._Ready();
@@ -76,6 +78,29 @@ namespace PuzzlemakerPro.Scripts.Editor
                         SetVoxel(pos, voxel.Copy());
                     }
                 }
+            }
+        }
+
+        private void Extrude(string texture, bool intrude)
+        {
+            var pos = selection.Item1;
+            var norm = selection.Item2;
+
+            if (norm == Vector3.Zero)
+            {
+                return;
+            }
+
+            if (intrude)
+            {
+                RemoveVoxel(pos, texture);
+                selection = (pos.Translate(-norm), norm);
+            }
+            else
+            {
+                pos = pos.Translate(norm);
+                SetVoxel(pos, new Voxel(texture));
+                selection = (pos, norm);
             }
         }
 
@@ -178,8 +203,6 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             updateMesh = true;
         }
-
-
 
         public Voxel GetVoxel(VoxelPos pos, bool addToLevel)
         {

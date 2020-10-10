@@ -15,6 +15,21 @@ namespace PuzzlemakerPro.Scripts.Editor
         public string rightTexture = "";
         public string leftTexture = "";
 
+        public Voxel()
+        {
+            
+        }
+
+        public Voxel(string texture)
+        {
+            topTexture = texture;
+            bottomTexture = texture;
+            frontTexture = texture;
+            backTexture = texture;
+            leftTexture = texture;
+            rightTexture = texture;
+        }
+
         public bool IsEmpty()
         {
             var strings = (new string[] { topTexture, bottomTexture, frontTexture, backTexture, rightTexture, leftTexture }).ToList().FindAll(s => s.Length > 0);
