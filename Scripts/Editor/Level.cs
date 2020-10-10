@@ -19,6 +19,13 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         private (VoxelPos, Vector3) selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
 
+        private readonly Plane BottomPlane = new Plane(0, -1, 0, 0);
+        private readonly Plane TopPlane = new Plane(0, 1, 0, 1);
+        private readonly Plane FrontPlane = new Plane(0, 0, -1, 0);
+        private readonly Plane BackPlane = new Plane(0, 0, 1, 1);
+        private readonly Plane RightPlane = new Plane(1, 0, 0, 0);
+        private readonly Plane LeftPlane = new Plane(1, 0, 0, -1);
+
         public override void _Ready()
         {
             base._Ready();
@@ -36,6 +43,46 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 updateMesh = false;
                 BuildVoxelMesh();
+            }
+        }
+
+        private void UpdateSelection(Vector3 start, Vector3 direction)
+        {
+            var current = start;
+            // Prevent infinite looping.
+            for (int i = 0; i < 500; i++)
+            {
+                var next = current + direction;
+                var pos = VoxelPos.FromVector3(next);
+
+                // Move head and tail of segment to origin.
+                var offset = pos.ToVector3();
+                var head = next - offset;
+                var tail = current - offset;
+
+                foreach (Plane face in new Plane[] { TopPlane, BottomPlane, FrontPlane, BackPlane, LeftPlane, RightPlane })
+                {
+                    Vector3? intersection = face.IntersectSegment(tail, head);
+
+                    // Note: Both the head and the tail are allowed to end up inside the voxel; because I can't be bothered to properly account for that edge case,
+                    // This null check is necessary.
+                    if (intersection != null)
+                    {
+                        Vector3 point = (Vector3)intersection;
+                        var normal = face.Normal;
+
+                        // Continue to the next face if the intersection is not within bounds.
+                        if (normal.x == 0 && (point.x < 0 || point.x > 1)) continue;
+                        if (normal.y == 0 && (point.y < 0 || point.y > 1)) continue;
+                        if (normal.z == 0 && (point.z < 0 || point.z > 1)) continue;
+
+                        // Update the selection and exit the search.
+                        selection = (pos, normal);
+                        return;
+                    }
+                }
+
+                current = next;
             }
         }
 
