@@ -22,32 +22,32 @@ namespace PuzzlemakerPro.Scripts.Editor
             return strings.Count == 0;
         }
 
-        public bool Front()
+        public bool HasFront()
         {
             return frontTexture != "";
         }
 
-        public bool Back()
+        public bool HasBack()
         {
             return backTexture != "";
         }
 
-        public bool Left()
+        public bool HasLeft()
         {
             return leftTexture != "";
         }
 
-        public bool Right()
+        public bool HasRight()
         {
             return rightTexture != "";
         }
 
-        public bool Top()
+        public bool HasTop()
         {
             return topTexture != "";
         }
 
-        public bool Bottom()
+        public bool HasBottom()
         {
             return bottomTexture != "";
         }

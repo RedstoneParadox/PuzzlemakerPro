@@ -212,32 +212,32 @@ namespace PuzzlemakerPro.Scripts.Editor
                     {
                         // Front
                         case 0:
-                            if (!voxel.Front()) break;
+                            if (!voxel.HasFront()) break;
                             BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up, UVFromName(voxel.frontTexture), Vector3.Forward);
                             break;
                         // Back
                         case 1:
-                            if (!voxel.Back()) break;
+                            if (!voxel.HasBack()) break;
                             BuildFace(pos.South().ToVector3(), Vector3.Up, Vector3.Right, UVFromName(voxel.backTexture), Vector3.Back);
                             break;
                         // Right
                         case 2:
-                            if (!voxel.Right()) break;
+                            if (!voxel.HasRight()) break;
                             BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, UVFromName(voxel.rightTexture), Vector3.Right);
                             break;
                         // Left
                         case 3:
-                            if (!voxel.Left()) break;
+                            if (!voxel.HasLeft()) break;
                             BuildFace(pos.East().ToVector3(), Vector3.Back, Vector3.Up, UVFromName(voxel.leftTexture), Vector3.Left);
                             break;
                         // Top
                         case 4:
-                            if (!voxel.Top()) break;
+                            if (!voxel.HasTop()) break;
                             BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, UVFromName(voxel.topTexture), Vector3.Up);
                             break;
                         // Bottom
                         case 5:
-                            if (!voxel.Bottom()) break;
+                            if (!voxel.HasBottom()) break;
                             BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, UVFromName(voxel.bottomTexture), Vector3.Down);
                             break;
                     }
