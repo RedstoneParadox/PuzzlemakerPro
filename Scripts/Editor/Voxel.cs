@@ -32,9 +32,12 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public bool IsEmpty()
         {
-            var strings = (new string[] { topTexture, bottomTexture, frontTexture, backTexture, rightTexture, leftTexture }).ToList().FindAll(s => s.Length > 0);
+            if (HasTop() || HasBottom() || HasLeft() || HasRight() || HasFront() || HasBack())
+            {
+                return false;
+            }
 
-            return strings.Count == 0;
+            return true;
         }
 
         public bool HasFront()

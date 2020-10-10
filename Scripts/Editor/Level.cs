@@ -39,6 +39,26 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 GenerateDefaultChamber();
             }
+            if (Input.IsActionJustPressed("select"))
+            {
+                Vector2 mousePos = GetViewport().GetMousePosition();
+                Camera camera = RuntimeRoot.CurrentCamera;
+                Spatial camBase = camera.GetParent<Spatial>();
+
+                Vector3 start = camera.ProjectPosition(mousePos, 0.75f);
+                Vector3 direction = camera.ProjectLocalRayNormal(mousePos);
+
+                UpdateSelection(start, direction);
+            }
+            if (Input.IsActionJustPressed("extrude"))
+            {
+                Extrude("white", false);
+            }
+            if (Input.IsActionJustPressed("intrude"))
+            {
+                Extrude("white", true);
+            }
+
             if (updateMesh)
             {
                 updateMesh = false;
@@ -54,6 +74,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 var next = current + direction;
                 var pos = VoxelPos.FromVector3(next);
+
+                if (GetVoxel(pos, false).IsEmpty())
+                {
+                    continue;
+                }
 
                 // Move head and tail of segment to origin.
                 var offset = pos.ToVector3();
