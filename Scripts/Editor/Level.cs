@@ -43,9 +43,8 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 Vector2 mousePos = GetViewport().GetMousePosition();
                 Camera camera = RuntimeRoot.CurrentCamera;
-                Spatial camBase = camera.GetParent<Spatial>();
 
-                Vector3 start = camera.ProjectPosition(mousePos, 0.75f);
+                Vector3 start = camera.ProjectPosition(mousePos, 1f);
                 Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                 UpdateSelection(start, direction);
@@ -114,6 +113,13 @@ namespace PuzzlemakerPro.Scripts.Editor
                             if (normal.z == 0 && (point.z < 0 || point.z > 1)) continue;
 
                             // Update the selection and exit the search.
+
+                            if (normal.x != 0)
+                            {
+                                // No idea why I have to do this.
+                                normal = new Vector3(-normal.x, 0, 0);
+                            }
+
                             selection = (pos, normal);
                             return;
                         }
@@ -126,6 +132,9 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public void GenerateDefaultChamber()
         {
+            Voxels.Clear();
+            selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
+
             var floor = new Voxel();
             floor.topTexture = "black";
             CreateVoxelShape(new VoxelPos(-5, -1, -5), new VoxelPos(6, -1, 6), floor);
