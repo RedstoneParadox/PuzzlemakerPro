@@ -29,7 +29,7 @@ public class Camera : Godot.Camera
         translation = translation.Rotated(new Vector3(1, 0, 0), pitch);
 
         Translation = translation;
-        LookAt(Vector3.Zero, Vector3.Up);
+        LookAt(GetParent<Spatial>().Translation, Vector3.Up);
 
         if (Input.IsActionJustPressed("debug_place"))
         {

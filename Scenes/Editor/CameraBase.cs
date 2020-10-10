@@ -4,7 +4,7 @@ using System;
 public class CameraBase : Spatial
 {
     private float yaw = 0.0f;
-    private float panSpeed = 1.0f;
+    private float panSpeed = 0.25f;
 
     public override void _Ready()
     {
@@ -26,6 +26,6 @@ public class CameraBase : Spatial
         if (Input.IsActionPressed("ui_right")) yaw += Mathf.Pi / 90;
 
         Rotation = new Vector3(0, yaw, 0);
-        Translation = Translation + targetOffset.Normalized() * panSpeed;
+        Translation += targetOffset.Normalized().Rotated(Vector3.Up, yaw) * panSpeed;
     }
 }
