@@ -247,42 +247,40 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public void RemoveVoxel(VoxelPos pos, string texture)
         {
-            var positions = new VoxelPos[] { pos.North(), pos.South(), pos.East(), pos.West(), pos.Up(), pos.Down() }.ToList();
+            var offsets = new Vector3[] { Vector3.Forward, Vector3.Back, Vector3.Left, Vector3.Right, Vector3.Up, Vector3.Down }.ToList();
+            var voxel = GetVoxel(pos, false);
 
             for (int i = 0; i < 6; i++)
             {
-                var neighborPos = positions[i];
+                var neighborPos = pos.Translate(offsets[i]);
                 var neighbor = GetVoxel(neighborPos, true);
 
-                if (!neighbor.IsEmpty())
+                switch (i)
                 {
-                    switch (i)
-                    {
-                        // North Neighbor
-                        case 0:
-                            neighbor.backTexture = texture;
-                            break;
-                        // South Neighbor
-                        case 1:
-                            neighbor.frontTexture = texture;
-                            break;
-                        // East Neighbor
-                        case 2:
-                            neighbor.leftTexture = texture;
-                            break;
-                        // West Neighbor
-                        case 3:
-                            neighbor.rightTexture = texture;
-                            break;
-                        // Up Neighbor
-                        case 4:
-                            neighbor.bottomTexture = texture;
-                            break;
-                        // Down Neighbor
-                        case 5:
-                            neighbor.topTexture = texture;
-                            break;
-                    }
+                    // Front Neighbor
+                    case 0:
+                        if (!voxel.HasFront()) neighbor.backTexture = texture;
+                        break;
+                    // Back Neighbord
+                    case 1:
+                        if (!voxel.HasBack()) neighbor.frontTexture = texture;
+                        break;
+                    // Left Neighbor
+                    case 2:
+                        if (!voxel.HasRight()) neighbor.leftTexture = texture;
+                        break;
+                    // Right Neighbor
+                    case 3:
+                        if (!voxel.HasLeft()) neighbor.rightTexture = texture;
+                        break;
+                    // Up Neighbor
+                    case 4:
+                        if (!voxel.HasTop()) neighbor.bottomTexture = texture;
+                        break;
+                    // Down Neighbor
+                    case 5:
+                        if (!voxel.HasBottom()) neighbor.topTexture = texture;
+                        break;
                 }
             }
 
