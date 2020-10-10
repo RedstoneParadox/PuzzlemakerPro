@@ -64,5 +64,10 @@ namespace PuzzlemakerPro.Scripts.Editor
         {
             return new Vector3(x, y, z);
         }
+
+        public override string ToString()
+        {
+            return $"VoxelPos({x}, {y}, {z})";
+        }
     }
 }

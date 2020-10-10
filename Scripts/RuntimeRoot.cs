@@ -10,4 +10,11 @@ public class RuntimeRoot : Node
     {
         AddChild(LevelScene.Instance());
     }
+
+    public override void _Process(float delta)
+    {
+        base._Process(delta);
+        DebugOverlay.Information["FPS"] = Engine.GetFramesPerSecond();
+        DebugOverlay.Information["Camera Transform"] = CurrentCamera.GlobalTransform;
+    }
 }

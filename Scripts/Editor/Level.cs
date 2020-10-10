@@ -64,6 +64,8 @@ namespace PuzzlemakerPro.Scripts.Editor
                 updateMesh = false;
                 BuildVoxelMesh();
             }
+
+            DebugOverlay.Information["Selection"] = selection;
         }
 
         private void UpdateSelection(Vector3 start, Vector3 direction)
