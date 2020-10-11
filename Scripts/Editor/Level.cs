@@ -23,8 +23,8 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Plane TopPlane = new Plane(0, 1, 0, 1);
         private readonly Plane FrontPlane = new Plane(0, 0, -1, 0);
         private readonly Plane BackPlane = new Plane(0, 0, 1, 1);
-        private readonly Plane RightPlane = new Plane(1, 0, 0, 0);
-        private readonly Plane LeftPlane = new Plane(-1, 0, 0, -1);
+        private readonly Plane RightPlane = new Plane(1, 0, 0, 1);
+        private readonly Plane LeftPlane = new Plane(-1, 0, 0, 0);
 
         public override void _Ready()
         {
@@ -136,13 +136,6 @@ namespace PuzzlemakerPro.Scripts.Editor
                             if (normal.z == 0 && (point.z < 0 || point.z > 1)) continue;
 
                             // Update the selection and exit the search.
-
-                            if (normal.x != 0)
-                            {
-                                // No idea why I have to do this.
-                                normal = new Vector3(-normal.x, 0, 0);
-                            }
-
                             selection = (pos, normal);
                             return;
                         }
