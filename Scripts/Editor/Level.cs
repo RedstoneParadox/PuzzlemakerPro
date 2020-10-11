@@ -153,27 +153,27 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             var floor = new Voxel();
             floor.topTexture = "black";
-            CreateVoxelShape(new VoxelPos(-5, -1, -5), new VoxelPos(6, -1, 6), floor);
+            CreateVoxelShape(new VoxelPos(-6, -1, -6), new VoxelPos(5, -1, 5), floor);
 
             var ceiling = new Voxel();
             ceiling.bottomTexture = "black";
-            CreateVoxelShape(new VoxelPos(-5, 12, -5), new VoxelPos(6, 12, 6), ceiling);
+            CreateVoxelShape(new VoxelPos(-6, 12, -6), new VoxelPos(5, 12, 5), ceiling);
 
             var leftWall = new Voxel();
             leftWall.rightTexture = "white";
-            CreateVoxelShape(new VoxelPos(-6, 0, -5), new VoxelPos(-6, 11, 6), leftWall);
+            CreateVoxelShape(new VoxelPos(-7, 0, -6), new VoxelPos(-7, 11, 5), leftWall);
 
             var rightWall = new Voxel();
             rightWall.leftTexture = "white";
-            CreateVoxelShape(new VoxelPos(7, 0, -5), new VoxelPos(7, 11, 6), rightWall);
+            CreateVoxelShape(new VoxelPos(6, 0, -6), new VoxelPos(6, 11, 5), rightWall);
 
             var frontWall = new Voxel();
             frontWall.backTexture = "white";
-            CreateVoxelShape(new VoxelPos(-5, 0, -6), new VoxelPos(6, 11, -6), frontWall);
+            CreateVoxelShape(new VoxelPos(-6, 0, -7), new VoxelPos(5, 11, -7), frontWall);
 
             var backWall = new Voxel();
             backWall.frontTexture = "white";
-            CreateVoxelShape(new VoxelPos(-5, 0, 7), new VoxelPos(6, 11, 7), backWall);
+            CreateVoxelShape(new VoxelPos(-6, 0, 6), new VoxelPos(5, 11, 6), backWall);
         }
 
         private void CreateVoxelShape(VoxelPos from, VoxelPos to, Voxel voxel)
