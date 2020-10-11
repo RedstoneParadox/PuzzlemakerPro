@@ -9,6 +9,8 @@ namespace PuzzlemakerPro.Scripts.Editor
 {
     class VoxelPos
     {
+        public static readonly VoxelPos Origin = new VoxelPos(0, 0, 0);
+
         public int x;
         public int y;
         public int z;

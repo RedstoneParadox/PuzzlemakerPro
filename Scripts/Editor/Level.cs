@@ -17,7 +17,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
         private bool updateMesh = false;
 
-        private (VoxelPos, Vector3) selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
+        private (VoxelPos, Vector3) selection = (VoxelPos.Origin, Vector3.Zero);
 
         private readonly Plane BottomPlane = new Plane(0, -1, 0, 0);
         private readonly Plane TopPlane = new Plane(0, 1, 0, 1);
@@ -145,13 +145,13 @@ namespace PuzzlemakerPro.Scripts.Editor
                 current = next;
             }
 
-            selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
+            selection = (VoxelPos.Origin, Vector3.Zero);
         }
 
         public void GenerateDefaultChamber()
         {
             Voxels.Clear();
-            selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
+            selection = (VoxelPos.Origin, Vector3.Zero);
 
             var floor = new Voxel();
             floor.topTexture = "black";
