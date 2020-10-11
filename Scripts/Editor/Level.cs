@@ -256,9 +256,6 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                         // Right Neighbor
                         case 2:
-                            GD.Print(neighbor.leftTexture);
-                            GD.Print(voxel.rightTexture);
-                            GD.Print(pos);
                             if (neighbor.HasLeft())
                             {
                                 neighbor.leftTexture = "";
@@ -267,6 +264,9 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                         // Left Neighbor
                         case 3:
+                            GD.Print(neighbor.rightTexture);
+                            GD.Print(voxel.leftTexture);
+                            GD.Print(pos);
                             if (neighbor.HasRight())
                             {
                                 neighbor.rightTexture = "";
