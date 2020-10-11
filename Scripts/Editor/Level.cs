@@ -151,9 +151,6 @@ namespace PuzzlemakerPro.Scripts.Editor
             Voxels.Clear();
             selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
 
-            SetVoxel(new VoxelPos(0, 0, 0), new Voxel("white"));
-
-            /*
             var floor = new Voxel();
             floor.topTexture = "black";
             CreateVoxelShape(new VoxelPos(-5, -1, -5), new VoxelPos(6, -1, 6), floor);
@@ -164,11 +161,11 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             var leftWall = new Voxel();
             leftWall.rightTexture = "white";
-            CreateVoxelShape(new VoxelPos(7, 0, -5), new VoxelPos(7, 11, 6), leftWall);
+            CreateVoxelShape(new VoxelPos(-6, 0, -5), new VoxelPos(-6, 11, 6), leftWall);
 
             var rightWall = new Voxel();
             rightWall.leftTexture = "white";
-            CreateVoxelShape(new VoxelPos(-6, 0, -5), new VoxelPos(-6, 11, 6), rightWall);
+            CreateVoxelShape(new VoxelPos(7, 0, -5), new VoxelPos(7, 11, 6), rightWall);
 
             var frontWall = new Voxel();
             frontWall.backTexture = "white";
@@ -177,7 +174,6 @@ namespace PuzzlemakerPro.Scripts.Editor
             var backWall = new Voxel();
             backWall.frontTexture = "white";
             CreateVoxelShape(new VoxelPos(-5, 0, 7), new VoxelPos(6, 11, 7), backWall);
-            */
         }
 
         private void CreateVoxelShape(VoxelPos from, VoxelPos to, Voxel voxel)
@@ -257,9 +253,6 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                         // Left Neighbor
                         case 3:
-                            GD.Print(neighbor.rightTexture);
-                            GD.Print(voxel.leftTexture);
-                            GD.Print(pos);
                             if (neighbor.HasRight())
                             {
                                 neighbor.rightTexture = "";
