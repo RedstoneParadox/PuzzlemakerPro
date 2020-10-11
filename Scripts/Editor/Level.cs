@@ -211,35 +211,53 @@ namespace PuzzlemakerPro.Scripts.Editor
                 {
                     switch(i)
                     {
-                        // North Neighbor
+                        // Front Neighbor
                         case 0:
-                            neighbor.backTexture = "";
-                            voxel.frontTexture = "";
+                            if (neighbor.HasBack())
+                            {
+                                neighbor.backTexture = "";
+                                voxel.frontTexture = "";
+                            }
                             break;
-                        // South Neighbor
+                        // Back Neighbord
                         case 1:
-                            neighbor.frontTexture = "";
-                            voxel.backTexture = "";
+                            if (neighbor.HasFront())
+                            {
+                                neighbor.frontTexture = "";
+                                voxel.backTexture = "";
+                            }
                             break;
-                        // East Neighbor
+                        // Right Neighbor
                         case 2:
-                            neighbor.leftTexture = "";
-                            voxel.rightTexture = "";
+                            if (neighbor.HasLeft())
+                            {
+                                neighbor.leftTexture = "";
+                                voxel.rightTexture = "";
+                            }
                             break;
-                        // West Neighbor
+                        // Left Neighbor
                         case 3:
-                            neighbor.rightTexture = "";
-                            voxel.leftTexture = "";
+                            if (neighbor.HasRight())
+                            {
+                                neighbor.rightTexture = "";
+                                voxel.leftTexture = "";
+                            }
                             break;
                         // Up Neighbor
                         case 4:
-                            neighbor.bottomTexture = "";
-                            voxel.topTexture = "";
+                            if (neighbor.HasBottom())
+                            {
+                                neighbor.bottomTexture = "";
+                                voxel.topTexture = "";
+                            }
                             break;
                         // Down Neighbor
                         case 5:
-                            neighbor.topTexture = "";
-                            voxel.bottomTexture = "";
+                            if (neighbor.HasTop())
+                            {
+                                neighbor.topTexture = "";
+                                voxel.bottomTexture = "";
+                            }
                             break;
                     }
                 }
