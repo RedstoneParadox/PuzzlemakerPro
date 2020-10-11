@@ -367,8 +367,8 @@ namespace PuzzlemakerPro.Scripts.Editor
 
                 if (voxel.HasFront()) BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up, UVFromName(voxel.frontTexture), Vector3.Forward);
                 if (voxel.HasBack()) BuildFace(pos.Backwards().ToVector3(), Vector3.Up, Vector3.Right, UVFromName(voxel.backTexture), Vector3.Back);
-                if (voxel.HasLeft()) BuildFace(pos.Right().ToVector3(), Vector3.Back, Vector3.Up, UVFromName(voxel.leftTexture), Vector3.Left);
-                if (voxel.HasRight()) BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, UVFromName(voxel.rightTexture), Vector3.Right);
+                if (voxel.HasLeft()) BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, UVFromName(voxel.leftTexture), Vector3.Left);
+                if (voxel.HasRight()) BuildFace(pos.Right().ToVector3(), Vector3.Back, Vector3.Up, UVFromName(voxel.rightTexture), Vector3.Right);
                 if (voxel.HasTop()) BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, UVFromName(voxel.topTexture), Vector3.Up);
                 if (voxel.HasBottom()) BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, UVFromName(voxel.bottomTexture), Vector3.Down);
 
