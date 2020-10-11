@@ -276,11 +276,11 @@ namespace PuzzlemakerPro.Scripts.Editor
                         break;
                     // Left Neighbor
                     case 2:
-                        if (!voxel.HasLeft()) neighbor.leftTexture = texture;
+                        if (!voxel.HasLeft()) neighbor.rightTexture = texture;
                         break;
                     // Right Neighbor
                     case 3:
-                        if (!voxel.HasRight()) neighbor.rightTexture = texture;
+                        if (!voxel.HasRight()) neighbor.leftTexture = texture;
                         break;
                     // Up Neighbor
                     case 4:
