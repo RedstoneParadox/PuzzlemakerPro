@@ -29,6 +29,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         public override void _Ready()
         {
             base._Ready();
+            DrawAxis();
         }
 
         public override void _Process(float delta)
@@ -65,6 +66,28 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
 
             DebugOverlay.Information["Selection"] = selection;
+        }
+
+        private void DrawAxis()
+        {
+            ImmediateGeometry xAxis = GetNode<ImmediateGeometry>("xAxis");
+            ImmediateGeometry yAxis = GetNode<ImmediateGeometry>("yAxis");
+            ImmediateGeometry zAxis = GetNode<ImmediateGeometry>("zAxis");
+
+            xAxis.Begin(Mesh.PrimitiveType.LineStrip);
+            xAxis.AddVertex(Vector3.Zero);
+            xAxis.AddVertex(new Vector3(100, 0, 0));
+            xAxis.End();
+
+            yAxis.Begin(Mesh.PrimitiveType.LineStrip);
+            yAxis.AddVertex(Vector3.Zero);
+            yAxis.AddVertex(new Vector3(0, 100, 0));
+            yAxis.End();
+
+            zAxis.Begin(Mesh.PrimitiveType.LineStrip);
+            zAxis.AddVertex(Vector3.Zero);
+            zAxis.AddVertex(new Vector3(0, 0, 100));
+            zAxis.End();
         }
 
         private void UpdateSelection(Vector3 start, Vector3 direction)
@@ -135,6 +158,9 @@ namespace PuzzlemakerPro.Scripts.Editor
             Voxels.Clear();
             selection = (new VoxelPos(0, 0, 0), Vector3.Zero);
 
+            SetVoxel(new VoxelPos(0, 0, 0), new Voxel("white"));
+
+            /*
             var floor = new Voxel();
             floor.topTexture = "black";
             CreateVoxelShape(new VoxelPos(-5, -1, -5), new VoxelPos(6, -1, 6), floor);
@@ -158,6 +184,7 @@ namespace PuzzlemakerPro.Scripts.Editor
             var backWall = new Voxel();
             backWall.frontTexture = "white";
             CreateVoxelShape(new VoxelPos(-5, 0, 7), new VoxelPos(6, 11, 7), backWall);
+            */
         }
 
         private void CreateVoxelShape(VoxelPos from, VoxelPos to, Voxel voxel)
@@ -229,6 +256,9 @@ namespace PuzzlemakerPro.Scripts.Editor
                             break;
                         // Right Neighbor
                         case 2:
+                            GD.Print(neighbor.leftTexture);
+                            GD.Print(voxel.rightTexture);
+                            GD.Print(pos);
                             if (neighbor.HasLeft())
                             {
                                 neighbor.leftTexture = "";
