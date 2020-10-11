@@ -200,7 +200,7 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public void SetVoxel(VoxelPos pos, Voxel voxel)
         {
-            var positions = new VoxelPos[] { pos.North(), pos.South(), pos.East(), pos.West(), pos.Up(), pos.Down() }.ToList();
+            var positions = new VoxelPos[] { pos.Forward(), pos.Backwards(), pos.Right(), pos.Left(), pos.Up(), pos.Down() }.ToList();
 
             for (int i  = 0; i < 6; i++)
             {
@@ -276,11 +276,11 @@ namespace PuzzlemakerPro.Scripts.Editor
                         break;
                     // Left Neighbor
                     case 2:
-                        if (!voxel.HasRight()) neighbor.leftTexture = texture;
+                        if (!voxel.HasLeft()) neighbor.leftTexture = texture;
                         break;
                     // Right Neighbor
                     case 3:
-                        if (!voxel.HasLeft()) neighbor.rightTexture = texture;
+                        if (!voxel.HasRight()) neighbor.rightTexture = texture;
                         break;
                     // Up Neighbor
                     case 4:
@@ -324,42 +324,13 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 var voxel = GetVoxel(pos, false);
 
-                for (int i = 0; i < 6; i++)
-                {
-                    switch (i)
-                    {
-                        // Front
-                        case 0:
-                            if (!voxel.HasFront()) break;
-                            BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up, UVFromName(voxel.frontTexture), Vector3.Forward);
-                            break;
-                        // Back
-                        case 1:
-                            if (!voxel.HasBack()) break;
-                            BuildFace(pos.South().ToVector3(), Vector3.Up, Vector3.Right, UVFromName(voxel.backTexture), Vector3.Back);
-                            break;
-                        // Right
-                        case 2:
-                            if (!voxel.HasRight()) break;
-                            BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, UVFromName(voxel.rightTexture), Vector3.Right);
-                            break;
-                        // Left
-                        case 3:
-                            if (!voxel.HasLeft()) break;
-                            BuildFace(pos.East().ToVector3(), Vector3.Back, Vector3.Up, UVFromName(voxel.leftTexture), Vector3.Left);
-                            break;
-                        // Top
-                        case 4:
-                            if (!voxel.HasTop()) break;
-                            BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, UVFromName(voxel.topTexture), Vector3.Up);
-                            break;
-                        // Bottom
-                        case 5:
-                            if (!voxel.HasBottom()) break;
-                            BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, UVFromName(voxel.bottomTexture), Vector3.Down);
-                            break;
-                    }
-                }
+                if (voxel.HasFront()) BuildFace(pos.ToVector3(), Vector3.Right, Vector3.Up, UVFromName(voxel.frontTexture), Vector3.Forward);
+                if (voxel.HasBack()) BuildFace(pos.Backwards().ToVector3(), Vector3.Up, Vector3.Right, UVFromName(voxel.backTexture), Vector3.Back);
+                if (voxel.HasLeft()) BuildFace(pos.Right().ToVector3(), Vector3.Back, Vector3.Up, UVFromName(voxel.leftTexture), Vector3.Left);
+                if (voxel.HasRight()) BuildFace(pos.ToVector3(), Vector3.Up, Vector3.Back, UVFromName(voxel.rightTexture), Vector3.Right);
+                if (voxel.HasTop()) BuildFace(pos.Up().ToVector3(), Vector3.Right, Vector3.Back, UVFromName(voxel.topTexture), Vector3.Up);
+                if (voxel.HasBottom()) BuildFace(pos.ToVector3(), Vector3.Back, Vector3.Right, UVFromName(voxel.bottomTexture), Vector3.Down);
+
             }
 
             Builder.Index();

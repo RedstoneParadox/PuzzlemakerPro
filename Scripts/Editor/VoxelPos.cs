@@ -20,22 +20,22 @@ namespace PuzzlemakerPro.Scripts.Editor
             this.z = z;
         }
 
-        public VoxelPos North()
+        public VoxelPos Forward()
         {
             return new VoxelPos(x, y, z - 1);
         }
 
-        public VoxelPos South()
+        public VoxelPos Backwards()
         {
             return new VoxelPos(x, y, z + 1);
         }
 
-        public VoxelPos East()
+        public VoxelPos Right()
         {
             return new VoxelPos(x + 1, y, z);
         }
 
-        public VoxelPos West()
+        public VoxelPos Left()
         {
             return new VoxelPos(x - 1, y, z);
         }
@@ -72,8 +72,6 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public override bool Equals(object obj)
         {
-
-
             if (obj is VoxelPos)
             {
                 VoxelPos other = (VoxelPos)obj;
