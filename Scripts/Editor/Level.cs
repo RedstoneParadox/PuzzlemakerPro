@@ -52,11 +52,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
             if (Input.IsActionJustPressed("extrude"))
             {
-                Extrude("white", false);
+                Extrude(false);
             }
             if (Input.IsActionJustPressed("intrude"))
             {
-                Extrude("white", true);
+                Extrude(true);
             }
 
             if (updateMesh)
@@ -193,10 +193,21 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
         }
 
-        private void Extrude(string texture, bool intrude)
+        private void Extrude(bool intrude)
         {
             var pos = selection.Item1;
             var norm = selection.Item2;
+            Voxel voxel = GetVoxel(pos, false);
+            string texture = "";
+
+            if (norm == Vector3.Up) texture = voxel.topTexture;
+            else if (norm == Vector3.Down) texture = voxel.bottomTexture;
+            else if (norm == Vector3.Left) texture = voxel.leftTexture;
+            else if (norm == Vector3.Right) texture = voxel.rightTexture;
+            else if (norm == Vector3.Forward) texture = voxel.frontTexture;
+            else if (norm == Vector3.Back) texture = voxel.backTexture;
+
+            if (texture == "") texture = "white";
 
             if (norm == Vector3.Zero)
             {
