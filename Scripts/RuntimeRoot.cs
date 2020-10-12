@@ -15,6 +15,6 @@ public class RuntimeRoot : Node
     {
         base._Process(delta);
         DebugOverlay.Information["FPS"] = Engine.GetFramesPerSecond();
-        DebugOverlay.Information["Camera Transform"] = CurrentCamera.GlobalTransform;
+        DebugOverlay.Information["Camera Position"] = CurrentCamera.GlobalTransform.origin;
     }
 }
