@@ -40,7 +40,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                     Vector2 mousePos = GetViewport().GetMousePosition();
                     Camera camera = RuntimeRoot.CurrentCamera;
 
-                    Vector3 start = camera.ProjectPosition(mousePos, 4f);
+                    Vector3 start = camera.ProjectPosition(mousePos, 5f);
                     Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                     UpdateSelection(start, direction);
