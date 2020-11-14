@@ -50,7 +50,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                 Vector2 mousePos = GetViewport().GetMousePosition();
                 Camera camera = RuntimeRoot.CurrentCamera;
 
-                Vector3 start = camera.ProjectPosition(mousePos, 2f);
+                Vector3 start = camera.ProjectPosition(mousePos, 4f);
                 Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                 UpdateSelection(start, direction);
@@ -225,11 +225,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
 
             // TODO: Stuff needs to be cached here for performance and memory.
-            foreach (int x in GD.Range(start.x, end.x + 1))
+            foreach (int x in Range(start.x, end.x + 1))
             {
-                foreach (int y in GD.Range(start.y, end.y + 1))
+                foreach (int y in Range(start.y, end.y + 1))
                 {
-                    foreach (int z in GD.Range(start.z, end.z + 1))
+                    foreach (int z in Range(start.z, end.z + 1))
                     {
                         VoxelPos pos = new VoxelPos(x, y, z);
                         Voxel voxel = GetVoxel(pos, false);
@@ -270,6 +270,21 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 selection.Translate(normal);
             }
+        }
+
+        private IEnumerable<int> Range(int start, int end)
+        {
+            if (start == end)
+            {
+                return new int[] { start };
+            }
+
+            if (start > end)
+            {
+                return GD.Range(end, start);
+            }
+
+            return GD.Range(start, end);
         }
 
         public void SetVoxel(VoxelPos pos, Voxel voxel)
