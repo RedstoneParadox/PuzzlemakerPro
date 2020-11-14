@@ -4,18 +4,16 @@
 
 [sub_resource type="StyleBoxFlat" id=1]
 
-[node name="DebugOverlay" type="MarginContainer"]
+[node name="DebugOverlay" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 10.0
 margin_top = 10.0
-margin_right = -10.0
-margin_bottom = -10.0
-size_flags_vertical = 0
+margin_right = -1014.0
+margin_bottom = -590.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="."]
 margin_bottom = 14.0
