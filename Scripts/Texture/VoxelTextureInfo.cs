@@ -9,6 +9,8 @@ namespace PuzzlemakerPro.Scripts.Texture
 {
     class VoxelTextureInfo
     {
+        
+
         public readonly Godot.Texture VoxelTexture;
         public readonly Vector2 Origin;
         // 1x1 fits on a single voxel face.

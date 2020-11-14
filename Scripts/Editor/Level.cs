@@ -17,7 +17,7 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
         private bool updateMesh = false;
 
-        private (VoxelPos, Vector3) selection = (VoxelPos.Origin, Vector3.Zero);
+        private Selection selection = new Selection();
 
         private readonly Plane BottomPlane = new Plane(0, -1, 0, 0);
         private readonly Plane TopPlane = new Plane(0, 1, 0, 1);
@@ -40,16 +40,26 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 GenerateDefaultChamber();
             }
+
             if (Input.IsActionJustPressed("select"))
+            {
+                selection.ResetSelection();
+            }
+            if (Input.IsActionPressed("select"))
             {
                 Vector2 mousePos = GetViewport().GetMousePosition();
                 Camera camera = RuntimeRoot.CurrentCamera;
 
-                Vector3 start = camera.ProjectPosition(mousePos, 1.25f);
+                Vector3 start = camera.ProjectPosition(mousePos, 0.01f);
                 Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                 UpdateSelection(start, direction);
             }
+            if (Input.IsActionJustReleased("select") && selection.Started())
+            {
+                selection.FinishSelection();
+            }
+
             if (Input.IsActionJustPressed("extrude"))
             {
                 Extrude(false);
@@ -136,7 +146,15 @@ namespace PuzzlemakerPro.Scripts.Editor
                             if (normal.z == 0 && (point.z < 0 || point.z > 1)) continue;
 
                             // Update the selection and exit the search.
-                            selection = (pos, normal);
+                            if (selection.Started())
+                            {
+                                selection.UpdateSelection(pos);
+                            }
+                            else
+                            {
+                                selection.StartSelection(pos, normal);
+                            }
+
                             return;
                         }
                     }
@@ -145,13 +163,13 @@ namespace PuzzlemakerPro.Scripts.Editor
                 current = next;
             }
 
-            selection = (VoxelPos.Origin, Vector3.Zero);
+            selection.ResetSelection();
         }
 
         public void GenerateDefaultChamber()
         {
             Voxels.Clear();
-            selection = (VoxelPos.Origin, Vector3.Zero);
+            selection.ResetSelection();
 
             var floor = new Voxel();
             floor.topTexture = "black";
@@ -195,35 +213,64 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         private void Extrude(bool intrude)
         {
-            var pos = selection.Item1;
-            var norm = selection.Item2;
-            Voxel voxel = GetVoxel(pos, false);
-            string texture = "";
+            if (selection.Is3D())
+            {
+                GD.Print("3D Selections are not implemented!");
+                return;
+            }
 
-            if (norm == Vector3.Up) texture = voxel.topTexture;
-            else if (norm == Vector3.Down) texture = voxel.bottomTexture;
-            else if (norm == Vector3.Left) texture = voxel.leftTexture;
-            else if (norm == Vector3.Right) texture = voxel.rightTexture;
-            else if (norm == Vector3.Forward) texture = voxel.frontTexture;
-            else if (norm == Vector3.Back) texture = voxel.backTexture;
+            var (start, end, normal) = selection.GetSelectionTuple();
 
-            if (texture == "") texture = "white";
-
-            if (norm == Vector3.Zero)
+            if (normal == Vector3.Zero)
             {
                 return;
             }
 
+            // TODO: Stuff needs to be cached here for performance and memory.
+            foreach (int x in GD.Range(start.x, end.x + 1))
+            {
+                foreach (int y in GD.Range(start.y, end.y + 1))
+                {
+                    foreach (int z in GD.Range(start.z, end.z + 1))
+                    {
+                        VoxelPos pos = new VoxelPos(x, y, z);
+                        Voxel voxel = GetVoxel(pos, false);
+                        string texture = "";
+
+                        if (voxel.IsEmpty())
+                        {
+                            continue;
+                        }
+
+                        if (normal == Vector3.Up) texture = voxel.topTexture;
+                        else if (normal == Vector3.Down) texture = voxel.bottomTexture;
+                        else if (normal == Vector3.Left) texture = voxel.leftTexture;
+                        else if (normal == Vector3.Right) texture = voxel.rightTexture;
+                        else if (normal == Vector3.Forward) texture = voxel.frontTexture;
+                        else if (normal == Vector3.Back) texture = voxel.backTexture;
+
+                        if (texture == "") texture = "white";
+
+                        if (intrude)
+                        {
+                            RemoveVoxel(pos, texture);
+                        }
+                        else
+                        {
+                            pos = pos.Translate(normal);
+                            SetVoxel(pos, new Voxel(texture));
+                        }
+                    }
+                }
+            }
+
             if (intrude)
             {
-                RemoveVoxel(pos, texture);
-                selection = (pos.Translate(-norm), norm);
+                selection.Translate(-normal);
             }
             else
             {
-                pos = pos.Translate(norm);
-                SetVoxel(pos, new Voxel(texture));
-                selection = (pos, norm);
+                selection.Translate(normal);
             }
         }
 
