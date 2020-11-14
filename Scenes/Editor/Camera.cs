@@ -19,19 +19,6 @@ public class Camera : Godot.Camera
 
         Translation = new Vector3(0, 0, length);
         LookAt(GetParent<Spatial>().Translation, Vector3.Up);
-
-        if (Input.IsActionJustPressed("debug_place"))
-        {
-            var spaceState = GetWorld().Space;
-            var pos = GetViewport().GetMousePosition();
-
-            Vector3 target = ProjectRayOrigin(pos);
-
-            var instance = debug.Instance() as MeshInstance;
-            instance.Translation = target;
-
-            GetParent().AddChild(debug.Instance());
-        }
     }
 
     public override void _UnhandledInput(InputEvent @event)
