@@ -50,7 +50,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                 Vector2 mousePos = GetViewport().GetMousePosition();
                 Camera camera = RuntimeRoot.CurrentCamera;
 
-                Vector3 start = camera.ProjectPosition(mousePos, 0.01f);
+                Vector3 start = camera.ProjectPosition(mousePos, 2f);
                 Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                 UpdateSelection(start, direction);
@@ -151,7 +151,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                                 selection.UpdateSelection(pos);
                             }
                             else
-                            {
+                            { 
                                 selection.StartSelection(pos, normal);
                             }
 
@@ -162,8 +162,6 @@ namespace PuzzlemakerPro.Scripts.Editor
 
                 current = next;
             }
-
-            selection.ResetSelection();
         }
 
         public void GenerateDefaultChamber()

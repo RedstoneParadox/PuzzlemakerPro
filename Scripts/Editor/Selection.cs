@@ -90,7 +90,7 @@ namespace PuzzlemakerPro.Scripts.Editor
 
         public override string ToString()
         {
-            return $"{{ Start: {start} End: {end} Normal: {normal} 3D: {Is3D()} }}";
+            return $"{{ Start: {start} End: {end} Normal: {normal} 3D: {Is3D()} Started: {started} Completed: {completed}}}";
         }
     }
 }
