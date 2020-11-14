@@ -3,8 +3,8 @@ using System;
 
 public class CameraBase : Spatial
 {
-    private float yaw = 0.0f;
-    private float pitch = 0.0f;
+    private float yaw = Mathf.Pi/4.0f;
+    private float pitch = -Mathf.Pi/6.0f;
     private float panSpeed = 0.25f;
 
     public override void _Ready()
