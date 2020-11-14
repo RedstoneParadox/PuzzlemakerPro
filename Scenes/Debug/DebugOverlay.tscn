@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/Debug/DebugOverlay.cs" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
 
 [node name="DebugOverlay" type="MarginContainer"]
 anchor_right = 1.0
@@ -16,6 +18,10 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="."]
-margin_right = 1004.0
-margin_bottom = 580.0
-size_flags_vertical = 3
+margin_bottom = 14.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_styles/normal = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
