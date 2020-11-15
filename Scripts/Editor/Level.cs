@@ -262,5 +262,10 @@ namespace PuzzlemakerPro.Scripts.Editor
             Builder.AddVertex(vertex);
             collisionShapeFaces.Add(vertex);
         }
+
+        internal void UpdateMesh()
+        {
+            updateMesh = true;
+        }
     }
 }

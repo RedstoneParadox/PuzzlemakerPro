@@ -10,6 +10,9 @@ namespace PuzzlemakerPro.Scripts.Editor
     class Editor: Node
     {
         private readonly PackedScene LevelScene = GD.Load<PackedScene>("res://Scenes/Editor/Level.tscn");
+        private readonly Godot.Texture White1x1 = GD.Load<Godot.Texture>("res://Assets/Textures/white_1x1.png");
+        private readonly Godot.Texture Black1x1 = GD.Load<Godot.Texture>("res://Assets/Textures/black_1x1.png");
+
         private Level level = null;
         private Selection selection = new Selection();
 
@@ -19,6 +22,17 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Plane BackPlane = new Plane(0, 0, 1, 1);
         private readonly Plane RightPlane = new Plane(1, 0, 0, 1);
         private readonly Plane LeftPlane = new Plane(-1, 0, 0, 0);
+
+
+        public override void _Ready()
+        {
+            base._Ready();
+
+            var textureList = GetNode<ItemList>("UI/SidePanel/TabContainer/Textures");
+
+            textureList.AddItem("White 1x1", White1x1);
+            textureList.AddItem("Black 1x1", Black1x1);
+        }
 
         public override void _Process(float delta)
         {
@@ -96,6 +110,17 @@ namespace PuzzlemakerPro.Scripts.Editor
             GetNode<CenterContainer>("UI/CenterContainer").Hide();
 
             GenerateDefaultChamber();
+        }
+
+        public void OnSelectTexture(int index)
+        {
+            if (selection.Completed())
+            {
+                GD.Print(index);
+
+                if (index == 0) ChangeTexture("white");
+                else if (index == 1) ChangeTexture("black");
+            }
         }
 
         public void GenerateDefaultChamber()
@@ -270,6 +295,49 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
         }
 
+        private void ChangeTexture(string texture)
+        {
+            if (selection.Is3D())
+            {
+                GD.Print("3D Selections are not implemented!");
+                return;
+            }
+
+            var (start, end, normal) = selection.GetSelectionTuple();
+
+            if (normal == Vector3.Zero)
+            {
+                return;
+            }
+
+            // TODO: Stuff needs to be cached here for performance and memory.
+            foreach (int x in Range(start.x, end.x + 1))
+            {
+                foreach (int y in Range(start.y, end.y + 1))
+                {
+                    foreach (int z in Range(start.z, end.z + 1))
+                    {
+                        VoxelPos pos = new VoxelPos(x, y, z);
+                        Voxel voxel = level.GetVoxel(pos, false);
+
+                        if (voxel.IsEmpty())
+                        {
+                            continue;
+                        }
+
+                        if (normal == Vector3.Up) voxel.topTexture = texture;
+                        else if (normal == Vector3.Down) voxel.bottomTexture = texture;
+                        else if (normal == Vector3.Left) voxel.leftTexture = texture;
+                        else if (normal == Vector3.Right) voxel.rightTexture = texture;
+                        else if (normal == Vector3.Forward) voxel.frontTexture = texture;
+                        else if (normal == Vector3.Back) voxel.backTexture = texture;
+                    }
+                }
+            }
+
+            level.UpdateMesh();
+        }
+
         private IEnumerable<int> Range(int start, int end)
         {
             if (start == end)
@@ -279,10 +347,10 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             if (start > end)
             {
-                return GD.Range(end, start);
+                return GD.Range(end, start + 1);
             }
 
-            return GD.Range(start, end);
+            return GD.Range(start, end + 1);
         }
     }
 }

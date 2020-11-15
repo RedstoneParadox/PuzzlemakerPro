@@ -23,4 +23,46 @@ text = "Create New Chamber"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SidePanel" type="MarginContainer" parent="UI"]
+margin_left = 4.0
+margin_top = 120.0
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="UI/SidePanel"]
+margin_right = 180.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 180, 400 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tab_align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Items" type="GridContainer" parent="UI/SidePanel/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 24.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Textures" type="ItemList" parent="UI/SidePanel/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 24.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+max_columns = 4
 [connection signal="pressed" from="UI/CenterContainer/NewChamberButton" to="." method="OnCreateNewChamber"]
+[connection signal="item_selected" from="UI/SidePanel/TabContainer/Textures" to="." method="OnSelectTexture"]
