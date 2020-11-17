@@ -287,7 +287,44 @@ namespace PuzzlemakerPro.Scripts.Editor
                 return;
             }
 
-            GetNode<MeshInstance>("2DSelectionHighlight").Show();
+            MeshInstance selectionHighlight2d = GetNode<MeshInstance>("2DSelectionHighlight");
+            PlaneMesh planeMesh = (PlaneMesh)selectionHighlight2d.Mesh;
+
+            selectionHighlight2d.Translation = Vector3.Zero;
+
+            if (normal == Vector3.Up)
+            {
+                planeMesh.Size = new Vector2(Math.Abs(start.x - end.x) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
+                selectionHighlight2d.Rotation = Vector3.Zero;
+            }
+            else if (normal == Vector3.Down)
+            {
+                planeMesh.Size = new Vector2(Math.Abs(start.x - end.x) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
+                selectionHighlight2d.Rotation = new Vector3(Mathf.Pi, 0, 0);
+            }
+            else if (normal == Vector3.Left)
+            {
+                planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
+                selectionHighlight2d.Rotation = new Vector3(0, 0, Mathf.Pi/2);
+            }
+            else if (normal == Vector3.Right)
+            {
+                planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
+                selectionHighlight2d.Rotation = new Vector3(0, 0, -Mathf.Pi / 2);
+            }
+            else if (normal == Vector3.Forward)
+            {
+                planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.x - end.x) + 1.0f);
+                selectionHighlight2d.Rotation = new Vector3(-Mathf.Pi / 2, 0, 0);
+            }
+            else if (normal == Vector3.Back)
+            {
+                planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.x - end.x) + 1.0f);
+                selectionHighlight2d.Rotation = new Vector3(Mathf.Pi / 2, 0, 0);
+            }
+
+
+            selectionHighlight2d.Show();
         }
 
         private void Extrude(bool intrude)
