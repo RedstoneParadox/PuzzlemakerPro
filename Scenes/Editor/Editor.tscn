@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Editor/Editor.cs" type="Script" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_unshaded = true
+albedo_color = Color( 0, 1, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_unshaded = true
+albedo_color = Color( 0, 0, 1, 1 )
 
 [node name="Editor" type="Node"]
 script = ExtResource( 1 )
@@ -48,7 +60,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 24.0
+margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
@@ -57,12 +69,24 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 24.0
+margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 allow_reselect = true
 max_columns = 4
+
+[node name="xAxis" type="ImmediateGeometry" parent="."]
+visible = false
+material_override = SubResource( 1 )
+
+[node name="yAxis" type="ImmediateGeometry" parent="."]
+visible = false
+material_override = SubResource( 2 )
+
+[node name="zAxis" type="ImmediateGeometry" parent="."]
+visible = false
+material_override = SubResource( 3 )
 [connection signal="pressed" from="UI/CenterContainer/NewChamberButton" to="." method="OnCreateNewChamber"]
 [connection signal="item_selected" from="UI/SidePanel/TabContainer/Textures" to="." method="OnSelectTexture"]

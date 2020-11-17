@@ -32,11 +32,46 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             textureList.AddItem("White 1x1", White1x1);
             textureList.AddItem("Black 1x1", Black1x1);
+
+            DrawAxis();
+        }
+
+        private void DrawAxis()
+        {
+            ImmediateGeometry xAxis = GetNode<ImmediateGeometry>("xAxis");
+            ImmediateGeometry yAxis = GetNode<ImmediateGeometry>("yAxis");
+            ImmediateGeometry zAxis = GetNode<ImmediateGeometry>("zAxis");
+
+            xAxis.Begin(Mesh.PrimitiveType.LineStrip);
+            xAxis.AddVertex(Vector3.Zero);
+            xAxis.AddVertex(new Vector3(100, 0, 0));
+            xAxis.End();
+
+            yAxis.Begin(Mesh.PrimitiveType.LineStrip);
+            yAxis.AddVertex(Vector3.Zero);
+            yAxis.AddVertex(new Vector3(0, 100, 0));
+            yAxis.End();
+
+            zAxis.Begin(Mesh.PrimitiveType.LineStrip);
+            zAxis.AddVertex(Vector3.Zero);
+            zAxis.AddVertex(new Vector3(0, 0, 100));
+            zAxis.End();
         }
 
         public override void _Process(float delta)
         {
             base._Process(delta);
+
+            if (Input.IsActionJustPressed("debug_view"))
+            {
+                Spatial xAxis = GetNode<Spatial>("xAxis");
+                Spatial yAxis = GetNode<Spatial>("yAxis");
+                Spatial zAxis = GetNode<Spatial>("zAxis");
+
+                xAxis.Visible = !xAxis.Visible;
+                yAxis.Visible = xAxis.Visible;
+                zAxis.Visible = yAxis.Visible;
+            }
 
             CenterContainer centerContainer = GetNode<CenterContainer>("UI/CenterContainer");
 

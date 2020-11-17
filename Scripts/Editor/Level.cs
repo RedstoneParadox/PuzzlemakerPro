@@ -17,12 +17,6 @@ namespace PuzzlemakerPro.Scripts.Editor
         private readonly Material voxelMaterial = GD.Load<Material>("res://Assets/Materials/voxel_material.tres");
         private bool updateMesh = false;
 
-        public override void _Ready()
-        {
-            base._Ready();
-            DrawAxis();
-        }
-
         public override void _Process(float delta)
         {
             base._Process(delta);
@@ -32,28 +26,6 @@ namespace PuzzlemakerPro.Scripts.Editor
                 updateMesh = false;
                 BuildVoxelMesh();
             }
-        }
-
-        private void DrawAxis()
-        {
-            ImmediateGeometry xAxis = GetNode<ImmediateGeometry>("xAxis");
-            ImmediateGeometry yAxis = GetNode<ImmediateGeometry>("yAxis");
-            ImmediateGeometry zAxis = GetNode<ImmediateGeometry>("zAxis");
-
-            xAxis.Begin(Mesh.PrimitiveType.LineStrip);
-            xAxis.AddVertex(Vector3.Zero);
-            xAxis.AddVertex(new Vector3(100, 0, 0));
-            xAxis.End();
-
-            yAxis.Begin(Mesh.PrimitiveType.LineStrip);
-            yAxis.AddVertex(Vector3.Zero);
-            yAxis.AddVertex(new Vector3(0, 100, 0));
-            yAxis.End();
-
-            zAxis.Begin(Mesh.PrimitiveType.LineStrip);
-            zAxis.AddVertex(Vector3.Zero);
-            zAxis.AddVertex(new Vector3(0, 0, 100));
-            zAxis.End();
         }
 
         public void SetVoxel(VoxelPos pos, Voxel voxel)
