@@ -89,7 +89,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                     Vector2 mousePos = GetViewport().GetMousePosition();
                     Camera camera = RuntimeRoot.CurrentCamera;
 
-                    Vector3 start = camera.ProjectPosition(mousePos, 4.5f);
+                    Vector3 start = camera.ProjectRayOrigin(mousePos);
                     Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                     UpdateSelection(start, direction);
@@ -128,7 +128,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                     Vector2 mousePos = GetViewport().GetMousePosition();
                     Camera camera = RuntimeRoot.CurrentCamera;
 
-                    Vector3 start = camera.ProjectPosition(mousePos, 4f);
+                    Vector3 start = camera.ProjectRayOrigin(mousePos);
                     Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                     UpdateSelection(start, direction);
@@ -258,6 +258,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                                 selection.StartSelection(pos, normal);
                             }
 
+                            UpdateSelectionHighlight();
                             return;
                         }
                     }
@@ -265,6 +266,28 @@ namespace PuzzlemakerPro.Scripts.Editor
 
                 current = next;
             }
+
+            UpdateSelectionHighlight();
+        }
+
+        private void UpdateSelectionHighlight()
+        {
+            if (selection.Is3D())
+            {
+                GD.Print("3D Selections are not implemented!");
+                GetNode<MeshInstance>("2DSelectionHighlight").Hide();
+                return;
+            }
+
+            var (start, end, normal) = selection.GetSelectionTuple();
+
+            if (normal == Vector3.Zero)
+            {
+                GetNode<MeshInstance>("2DSelectionHighlight").Hide();
+                return;
+            }
+
+            GetNode<MeshInstance>("2DSelectionHighlight").Show();
         }
 
         private void Extrude(bool intrude)
@@ -283,11 +306,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
 
             // TODO: Stuff needs to be cached here for performance and memory.
-            foreach (int x in Range(start.x, end.x + 1))
+            foreach (int x in Range(start.x, end.x))
             {
-                foreach (int y in Range(start.y, end.y + 1))
+                foreach (int y in Range(start.y, end.y))
                 {
-                    foreach (int z in Range(start.z, end.z + 1))
+                    foreach (int z in Range(start.z, end.z))
                     {
                         VoxelPos pos = new VoxelPos(x, y, z);
                         Voxel voxel = level.GetVoxel(pos, false);
@@ -328,6 +351,8 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 selection.Translate(normal);
             }
+
+            UpdateSelectionHighlight();
         }
 
         private void ChangeTexture(string texture)
@@ -346,11 +371,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
 
             // TODO: Stuff needs to be cached here for performance and memory.
-            foreach (int x in Range(start.x, end.x + 1))
+            foreach (int x in Range(start.x, end.x))
             {
-                foreach (int y in Range(start.y, end.y + 1))
+                foreach (int y in Range(start.y, end.y))
                 {
-                    foreach (int z in Range(start.z, end.z + 1))
+                    foreach (int z in Range(start.z, end.z))
                     {
                         VoxelPos pos = new VoxelPos(x, y, z);
                         Voxel voxel = level.GetVoxel(pos, false);
@@ -382,10 +407,10 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             if (start > end)
             {
-                return GD.Range(end, start);
+                return GD.Range(end, start + 1);
             }
 
-            return GD.Range(start, end);
+            return GD.Range(start, end + 1);
         }
     }
 }

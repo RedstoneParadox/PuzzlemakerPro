@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Editor/Editor.cs" type="Script" id=1]
 
@@ -13,6 +13,13 @@ albedo_color = Color( 0, 1, 0, 1 )
 [sub_resource type="SpatialMaterial" id=3]
 flags_unshaded = true
 albedo_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="PlaneMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+flags_unshaded = true
+albedo_color = Color( 1, 0.913725, 0, 0.121569 )
 
 [node name="Editor" type="Node"]
 script = ExtResource( 1 )
@@ -88,5 +95,10 @@ material_override = SubResource( 2 )
 [node name="zAxis" type="ImmediateGeometry" parent="."]
 visible = false
 material_override = SubResource( 3 )
+
+[node name="2DSelectionHighlight" type="MeshInstance" parent="."]
+visible = false
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
 [connection signal="pressed" from="UI/CenterContainer/NewChamberButton" to="." method="OnCreateNewChamber"]
 [connection signal="item_selected" from="UI/SidePanel/TabContainer/Textures" to="." method="OnSelectTexture"]
