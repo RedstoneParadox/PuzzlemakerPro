@@ -151,10 +151,11 @@ namespace PuzzlemakerPro.Scripts.Editor
         {
             if (selection.Completed())
             {
-                GD.Print(index);
-
                 if (index == 0) ChangeTexture("white");
                 else if (index == 1) ChangeTexture("black");
+
+                var textureList = GetNode<ItemList>("UI/SidePanel/TabContainer/Textures");
+                textureList.Unselect(index);
             }
         }
 
