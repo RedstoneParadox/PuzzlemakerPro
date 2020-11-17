@@ -296,31 +296,37 @@ namespace PuzzlemakerPro.Scripts.Editor
             {
                 planeMesh.Size = new Vector2(Math.Abs(start.x - end.x) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
                 selectionHighlight2d.Rotation = Vector3.Zero;
+                selectionHighlight2d.Translation = new Vector3((end.x - start.x)/2.0f + start.x + 0.5f, start.y + 1.01f, (end.z - start.z) / 2.0f + start.z + 0.5f);
             }
             else if (normal == Vector3.Down)
             {
                 planeMesh.Size = new Vector2(Math.Abs(start.x - end.x) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
                 selectionHighlight2d.Rotation = new Vector3(Mathf.Pi, 0, 0);
+                selectionHighlight2d.Translation = new Vector3((end.x - start.x) / 2.0f + start.x + 0.5f, start.y - 0.01f, (end.z - start.z) / 2.0f + start.z + 0.5f);
             }
             else if (normal == Vector3.Left)
             {
                 planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
                 selectionHighlight2d.Rotation = new Vector3(0, 0, Mathf.Pi/2);
+                selectionHighlight2d.Translation = new Vector3(start.x - 0.01f, (end.y - start.y) / 2.0f + start.y + 0.5f, (end.z - start.z) / 2.0f + start.z + 0.5f);
             }
             else if (normal == Vector3.Right)
             {
                 planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.z - end.z) + 1.0f);
                 selectionHighlight2d.Rotation = new Vector3(0, 0, -Mathf.Pi / 2);
+                selectionHighlight2d.Translation = new Vector3(start.x + 1.01f, (end.y - start.y) / 2.0f + start.y + 0.5f, (end.z - start.z) / 2.0f + start.z + 0.5f);
             }
             else if (normal == Vector3.Forward)
             {
-                planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.x - end.x) + 1.0f);
+                planeMesh.Size = new Vector2(Math.Abs(start.x - end.x) + 1.0f, Math.Abs(start.y - end.y) + 1.0f);
                 selectionHighlight2d.Rotation = new Vector3(-Mathf.Pi / 2, 0, 0);
+                selectionHighlight2d.Translation = new Vector3((end.x - start.x) / 2.0f + start.x + 0.5f, (end.y - start.y) / 2.0f + start.y + 0.5f, start.z - 0.01f);
             }
             else if (normal == Vector3.Back)
             {
-                planeMesh.Size = new Vector2(Math.Abs(start.y - end.y) + 1.0f, Math.Abs(start.x - end.x) + 1.0f);
+                planeMesh.Size = new Vector2(Math.Abs(start.x - end.x) + 1.0f, Math.Abs(start.y - end.y) + 1.0f);
                 selectionHighlight2d.Rotation = new Vector3(Mathf.Pi / 2, 0, 0);
+                selectionHighlight2d.Translation = new Vector3((end.x - start.x) / 2.0f + start.x + 0.5f, (end.y - start.y) / 2.0f + start.y + 0.5f, start.z + 1.01f);
             }
 
 
