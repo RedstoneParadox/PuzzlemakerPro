@@ -54,7 +54,7 @@ namespace PuzzlemakerPro.Scripts.Editor
                     Vector2 mousePos = GetViewport().GetMousePosition();
                     Camera camera = RuntimeRoot.CurrentCamera;
 
-                    Vector3 start = camera.ProjectPosition(mousePos, 5f);
+                    Vector3 start = camera.ProjectPosition(mousePos, 4.5f);
                     Vector3 direction = camera.ProjectRayNormal(mousePos);
 
                     UpdateSelection(start, direction);
@@ -347,10 +347,10 @@ namespace PuzzlemakerPro.Scripts.Editor
 
             if (start > end)
             {
-                return GD.Range(end, start + 1);
+                return GD.Range(end, start);
             }
 
-            return GD.Range(start, end + 1);
+            return GD.Range(start, end);
         }
     }
 }
