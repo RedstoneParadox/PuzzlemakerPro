@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Development\\Portal 2\\PuzzlemakerPro\\Puzzlemaker Pro.csproj": {}
+    "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj": {}
   },
   "projects": {
-    "C:\\Development\\Portal 2\\PuzzlemakerPro\\Puzzlemaker Pro.csproj": {
+    "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Development\\Portal 2\\PuzzlemakerPro\\Puzzlemaker Pro.csproj",
+        "projectUniqueName": "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj",
         "projectName": "Puzzlemaker Pro",
-        "projectPath": "C:\\Development\\Portal 2\\PuzzlemakerPro\\Puzzlemaker Pro.csproj",
+        "projectPath": "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\Puzzlemaker Pro.csproj",
         "packagesPath": "C:\\Users\\spinj\\.nuget\\packages\\",
-        "outputPath": "C:\\Development\\Portal 2\\PuzzlemakerPro\\.mono\\temp\\obj\\",
+        "outputPath": "C:\\DEVELOPMENT\\PORTAL 2\\PUZZLEMAKERPRO\\.mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -40,6 +40,12 @@
       },
       "frameworks": {
         "net472": {
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }

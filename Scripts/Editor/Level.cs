@@ -162,6 +162,18 @@ namespace PuzzlemakerPro.Scripts.Editor
             return voxel;
         }
 
+        public List<(VoxelPos, Voxel)> GetVoxelList()
+        {
+            List<(VoxelPos, Voxel)> list = new List<(VoxelPos, Voxel)>();
+
+            foreach (KeyValuePair<VoxelPos, Voxel> pair in Voxels)
+            {
+                list.Add((pair.Key, pair.Value));
+            }
+
+            return list;
+        }
+
         public void ClearVoxels()
         {
             Voxels.Clear();
