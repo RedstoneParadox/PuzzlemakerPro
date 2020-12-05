@@ -41,9 +41,9 @@
       "frameworks": {
         "net472": {
           "dependencies": {
-            "Newtonsoft.Json": {
+            "System.Json": {
               "target": "Package",
-              "version": "[12.0.3, )"
+              "version": "[4.7.1, )"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"

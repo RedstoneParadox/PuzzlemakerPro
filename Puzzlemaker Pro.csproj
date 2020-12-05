@@ -4,6 +4,9 @@
     <RootNamespace>PuzzlemakerPro</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Json" Version="4.7.1" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="VMFParser">
       <HintPath>Libraries\VMFParser.dll</HintPath>
     </Reference>
