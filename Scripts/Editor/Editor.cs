@@ -159,6 +159,11 @@ namespace PuzzlemakerPro.Scripts.Editor
             }
         }
 
+        public void OnSave()
+        {
+            if (level != null) Saving.SaveSystem.SaveLevel("", level);
+        }
+
         public void GenerateDefaultChamber()
         {
             level.ClearVoxels();

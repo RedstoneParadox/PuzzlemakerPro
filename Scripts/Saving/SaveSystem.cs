@@ -10,7 +10,7 @@ namespace PuzzlemakerPro.Scripts.Saving
 {
     class SaveSystem
     {
-        public void SaveLevel(string filepath, Level level)
+        public static void SaveLevel(string filepath, Level level)
         {
             JsonObject rootObject = new JsonObject();
             JsonArray textureArray = new JsonArray();
@@ -26,6 +26,7 @@ namespace PuzzlemakerPro.Scripts.Saving
 
                 JsonObject voxelObject = new JsonObject();
                 JsonObject posObject = new JsonObject();
+                JsonArray faceArray = new JsonArray();
 
                 posObject["x"] = pos.x;
                 posObject["y"] = pos.y;
@@ -33,10 +34,30 @@ namespace PuzzlemakerPro.Scripts.Saving
 
                 voxelObject["pos"] = posObject;
 
-                foreach
+                foreach (string face in new string[] { voxel.frontTexture, voxel.backTexture, voxel.leftTexture, voxel.rightTexture, voxel.topTexture, voxel.bottomTexture })
+                {
+                    if (!textures.Contains(face))
+                    {
+                        textures.Add(face);
+                    }
+
+                    faceArray.Add(new JsonPrimitive(textures.IndexOf(face)));
+                }
+
+                voxelObject["faces"] = faceArray;
+
+                voxelArray.Add(voxelObject);
             }
 
+            textures.ForEach((texture) => textureArray.Add(new JsonPrimitive(texture)));
+
             rootObject.Add("textures", textureArray);
+            rootObject.Add("voxels", voxelArray);
+
+            Godot.File file = new Godot.File();
+            file.Open("user://save.json", Godot.File.ModeFlags.Write);
+            file.StoreString(rootObject.ToString());
+            file.Close();
         }
     }
 }
