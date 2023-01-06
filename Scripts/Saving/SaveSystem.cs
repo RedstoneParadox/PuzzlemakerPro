@@ -59,5 +59,16 @@ namespace PuzzlemakerPro.Scripts.Saving
             file.StoreString(rootObject.ToString());
             file.Close();
         }
+
+        public static Level Load()
+        {
+            Godot.File file = new Godot.File();
+            file.Open("user://save.json", Godot.File.ModeFlags.Read);
+            file.StoreString(rootObject.ToString());
+            file.Close();
+
+
+            return new Level();
+        }
     }
 }
